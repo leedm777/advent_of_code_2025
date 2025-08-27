@@ -36,7 +36,32 @@ defmodule AoC do
     end
   end
 
-  defp fetch_input(_day) do
-    [] # TODO
+  def fetch_input(0) do
+    # hack for my day 0 testing the framework
+    fetch_input(1, 2015)
+  end
+
+  def fetch_input(day, year \\ 2025) do
+    filename = "./input/input-#{year}-#{day}.txt"
+    case File.read(filename) do
+      {:ok, input} -> input
+      {:error, :enoent} ->
+        input = download_input(day, year)
+        File.write!(filename, input)
+        input
+      {:error, err} -> raise err
+    end
+  end
+
+  def download_input(day, year) do
+    cookie = File.read!("./.cookie.txt") |> String.trim
+    url = "https://adventofcode.com/#{year}/day/#{day}/input"
+    IO.puts(:stderr, "Downloading #{url}")
+    res = Req.get!(url,
+      headers: [{"cookie", cookie}])
+    if res.status != 200 do
+      raise "Failed to fetch input (#{url}): #{res.body}"
+    end
+    res.body
   end
 end
