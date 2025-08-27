@@ -3,10 +3,10 @@ defmodule AdventOfCode2025.MixProject do
 
   def project do
     [
-      app: :advent_of_code_2025,
+      app: :aoc,
       version: "0.1.0",
       elixir: "~> 1.18",
-      start_permanent: Mix.env() == :prod,
+      start_permanent: false,
       deps: deps()
     ]
   end
@@ -14,7 +14,8 @@ defmodule AdventOfCode2025.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      extra_applications: [:logger],
+      mod: {AoC, []}
     ]
   end
 
