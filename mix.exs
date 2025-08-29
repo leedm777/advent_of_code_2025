@@ -22,7 +22,8 @@ defmodule AdventOfCode2025.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:req, "~> 0.5"}
+      {:req, "~> 0.5"},
+      {:ex_parameterized, "~> 1.3"}
     ]
   end
 end
