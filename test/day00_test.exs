@@ -21,4 +21,16 @@ defmodule Day00TestExamples do
       {AoC.fetch_input(0), 232}
     ])
   end
+
+  test_with_params "part2", fn input, expected ->
+    actual = AoC.Day00.solve(:part2, input)
+    assert expected == actual
+  end do
+    TestHelper.describe_examples([
+      {"))", 1},
+      {")", 1},
+      {"()())", 5},
+      {AoC.fetch_input(0), 1783}
+    ])
+  end
 end
