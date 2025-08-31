@@ -1,4 +1,4 @@
-defmodule AoC.Day00 do
+defmodule AoC.Day1501 do
   @behaviour AoC.Solution
   import AoC.Solution
 
