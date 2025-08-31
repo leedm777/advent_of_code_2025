@@ -7,7 +7,12 @@ defmodule AoC do
 
   @impl true
   def start(_type, _args) do
-    Task.start_link(fn -> AoC.solve_all() end)
+    children = [
+      {AoC.Input, name: AoC.Input},
+      {Task, fn -> AoC.solve_all() end}
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 
   def module_exists?(atom) do
@@ -47,55 +52,6 @@ defmodule AoC do
   end
 
   def fetch_input(year, day) do
-    filename = "./input/input-#{year}-#{day}.txt"
-
-    case File.read(filename) do
-      {:ok, input} ->
-        input
-
-      {:error, :enoent} ->
-        input = download_input(year, day)
-        File.write!(filename, input)
-        input
-
-      {:error, err} ->
-        raise err
-    end
-  end
-
-  def download_input(year, day) do
-    case File.read("./.cookie.txt") do
-      {:ok, cookie} ->
-        cookie = String.trim(cookie)
-        url = get_url(year, day)
-        IO.puts(:stderr, "Downloading #{url}")
-
-        case Req.get(url, headers: [{"cookie", cookie}]) do
-          {:ok, res} ->
-            if res.status != 200 do
-              raise "Failed to fetch input (#{url}): #{res.body}"
-            end
-
-            res.body
-
-          {:error, ex} ->
-            IO.puts(:stderr, "Failed to fetch input (#{url}): #{inspect(ex)}")
-            raise ex
-        end
-
-      {:error, :enoent} ->
-        raise ".cookie.txt does not exist; see README.md"
-
-      {:error, err} ->
-        raise err
-    end
-  end
-
-  def get_url(year, "0" <> day) do
-    get_url(year, day)
-  end
-
-  def get_url(year, day) do
-    "https://adventofcode.com/#{year}/day/#{day}/input"
+    GenServer.call(AoC.Input, {:fetch, year, day})
   end
 end
