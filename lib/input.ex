@@ -67,5 +67,4 @@ defmodule AoC.Input do
   def get_url(year, day) do
     "https://adventofcode.com/#{year}/day/#{day}/input"
   end
-
 end

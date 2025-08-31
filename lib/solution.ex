@@ -4,7 +4,7 @@ defmodule AoC.Solution do
   """
   @callback solve(part :: atom(), input :: [String.t()]) :: String.t()
 
-  def nope do
-    :nope
+  def lines(input) do
+    input |> String.trim() |> String.split("\n")
   end
 end
