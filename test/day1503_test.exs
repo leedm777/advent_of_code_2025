@@ -21,7 +21,10 @@ defmodule Day1503Test do
     assert expected == actual
   end do
     TestHelper.describe_examples([
-      {AoC.fetch_input("2015", "03"), "TODO"}
+      {"^v", 3},
+      {"^>v<", 3},
+      {"^v^v^v^v^v", 11},
+      {AoC.fetch_input("2015", "03"), 2639}
     ])
   end
 end
