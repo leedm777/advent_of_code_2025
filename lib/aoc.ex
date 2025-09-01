@@ -7,19 +7,24 @@ defmodule AoC do
 
   @impl true
   def start(_type, _args) do
+    solve? = Application.get_env(:aoc, :solve)
+
     children = [
       {AoC.Input, name: AoC.Input},
-      {Task, fn -> AoC.solve_all() end}
+      {Task, fn -> AoC.solve_all(solve?) end}
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_all)
   end
 
   def module_exists?(atom) do
     function_exported?(atom, :__info__, 1)
   end
 
-  def solve_all() do
+  def solve_all(false) do
+  end
+
+  def solve_all(true) do
     {:ok, all_aoc_modules} = :application.get_key(:aoc, :modules)
 
     modules =
