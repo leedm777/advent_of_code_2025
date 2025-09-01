@@ -43,22 +43,30 @@ defmodule Day${YRDY}Test do
 
   doctest AoC.Day${YRDY}
 
-  test_with_params "part1", fn input, expected ->
+  test_with_params "part1 examples", fn input, expected ->
     actual = AoC.Day${YRDY}.solve(:part1, input)
     assert expected == actual
   end do
     TestHelper.describe_examples([
-      {AoC.fetch_input("${YEAR}", "${DAY}"), "TODO"}
     ])
   end
 
-  test_with_params "part2", fn input, expected ->
+  test "part1 final" do
+    actual = AoC.Day${YRDY}.solve(:part1, AoC.fetch_input("${YEAR}", "${DAY}"))
+    assert "TODO" == actual
+  end
+
+  test_with_params "part2 examples", fn input, expected ->
     actual = AoC.Day${YRDY}.solve(:part2, input)
     assert expected == actual
   end do
     TestHelper.describe_examples([
-      {AoC.fetch_input("${YEAR}", "${DAY}"), "TODO"}
     ])
+  end
+
+  test "part2 final" do
+    actual = AoC.Day${YRDY}.solve(:part2, AoC.fetch_input("${YEAR}", "${DAY}"))
+    assert "TODO" == actual
   end
 end
 EOF
