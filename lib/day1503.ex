@@ -24,7 +24,7 @@ defmodule AoC.Day1503 do
       |> String.trim()
       |> String.graphemes()
       # Two positions (Santa and RoboSanta), alternating which one moves
-      |> Enum.reduce(%{pos: {{0, 0}, {0,0}}, visited: %{{0, 0} => 2}}, fn
+      |> Enum.reduce(%{pos: {{0, 0}, {0, 0}}, visited: %{{0, 0} => 2}}, fn
         dir, %{pos: {p1, p2}, visited: v} ->
           p1 = move(p1, dir)
           v = Map.update(v, p1, 1, &(&1 + 1))
