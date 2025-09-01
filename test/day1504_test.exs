@@ -25,7 +25,7 @@ defmodule Day1504Test do
     assert expected == actual
   end do
     TestHelper.describe_examples([
-      {AoC.fetch_input("2015", "04"), "TODO"}
+      {AoC.fetch_input("2015", "04"), 9_962_624}
     ])
   end
 end
