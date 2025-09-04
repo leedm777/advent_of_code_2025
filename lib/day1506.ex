@@ -6,6 +6,10 @@ defmodule AoC.Day1506 do
            {{row, col}, false}
          end)
 
+  @bright_grid (for row <- 0..999, col <- 0..999, into: %{} do
+                  {{row, col}, 0}
+                end)
+
   @impl true
   def solve(:part1, input) do
     lines(input)
@@ -33,8 +37,29 @@ defmodule AoC.Day1506 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    lines(input)
+    |> Enum.map(&parse_line(&1))
+    |> Enum.reduce(@bright_grid, fn %{
+                                      cmd: cmd,
+                                      start_row: start_row,
+                                      start_col: start_col,
+                                      end_row: end_row,
+                                      end_col: end_col
+                                    },
+                                    acc ->
+      for row <- start_row..end_row, col <- start_col..end_col, into: acc do
+        v =
+          case cmd do
+            "turn on" -> acc[{row, col}] + 1
+            "turn off" -> max(acc[{row, col}] - 1, 0)
+            "toggle" -> acc[{row, col}] + 2
+          end
+
+        {{row, col}, v}
+      end
+    end)
+    |> Enum.sum_by(fn {_, v} -> v end)
   end
 
   def parse_line(line) do

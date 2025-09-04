@@ -39,11 +39,15 @@ defmodule Day1506Test do
     actual = AoC.Day1506.solve(:part2, input)
     assert expected == actual
   end do
-    TestHelper.describe_examples([])
+    TestHelper.describe_examples([
+      {"turn on 0,0 through 0,0", 1},
+      {"toggle 0,0 through 999,999", 2_000_000}
+    ])
   end
 
   test "part2 final" do
     actual = AoC.Day1506.solve(:part2, AoC.fetch_input("2015", "06"))
-    assert "TODO" == actual
+    assert actual > 13_396_307
+    assert 14_110_788 == actual
   end
 end
