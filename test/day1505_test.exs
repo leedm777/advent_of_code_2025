@@ -13,7 +13,7 @@ defmodule Day1505Test do
       {"aaa", true},
       {"jchzalrnumimnmhp", true},
       {"haegwjzuvuyypxyu", true},
-      {"dvszwmarrgswjxmb", false},
+      {"dvszwmarrgswjxmb", false}
     ])
   end
 
@@ -26,7 +26,7 @@ defmodule Day1505Test do
       {"aaa", true},
       {"jchzalrnumimnmhp", false},
       {"haegwjzuvuyypxyu", true},
-      {"dvszwmarrgswjxmb", true},
+      {"dvszwmarrgswjxmb", true}
     ])
   end
 
@@ -43,7 +43,7 @@ defmodule Day1505Test do
       {"ab", true},
       {"cd", true},
       {"pq", true},
-      {"xy", true},
+      {"xy", true}
     ])
   end
 
@@ -69,15 +69,54 @@ defmodule Day1505Test do
     assert 238 == actual
   end
 
+  test_with_params "has_repeating_double_letters", fn input, expected ->
+    actual = AoC.Day1505.has_repeating_double_letters(input)
+    assert expected == actual
+  end do
+    TestHelper.describe_examples([
+      {"xyxy", true},
+      {"aabcdefgaa", true},
+      {"qjhvhtzxzqqjkmpb", true},
+      {"xxyxx", true},
+      {"uurcxstgmygtbstg", true},
+      {"ieodomkazucvgmuy", false}
+    ])
+  end
+
+  test_with_params "has_three_letter_palindrome", fn input, expected ->
+    actual = AoC.Day1505.has_three_letter_palindrome(input)
+    assert expected == actual
+  end do
+    TestHelper.describe_examples([
+      {"xyx", true},
+      {"abcdefeghi", true},
+      {"efe", true},
+      {"aaa", true},
+      {"qjhvhtzxzqqjkmpb", true},
+      {"xxyxx", true},
+      {"uurcxstgmygtbstg", false},
+      {"ieodomkazucvgmuy", true}
+    ])
+  end
+
   test_with_params "part2 examples", fn input, expected ->
     actual = AoC.Day1505.solve(:part2, input)
     assert expected == actual
   end do
-    TestHelper.describe_examples([])
+    TestHelper.describe_examples([
+      {"qjhvhtzxzqqjkmpb", 1},
+      {"xxyxx", 1},
+      {"uurcxstgmygtbstg", 0},
+      {"ieodomkazucvgmuy", 0},
+      {Enum.join(
+         ["qjhvhtzxzqqjkmpb", "xxyxx", "uurcxstgmygtbstg", "ieodomkazucvgmuy"],
+         "\n"
+       ), 2}
+    ])
   end
 
   test "part2 final" do
     actual = AoC.Day1505.solve(:part2, AoC.fetch_input("2015", "05"))
-    assert "TODO" == actual
+    assert 69 == actual
   end
 end

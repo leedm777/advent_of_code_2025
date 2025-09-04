@@ -8,8 +8,20 @@ defmodule AoC.Day1505 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    lines(input) |> Enum.count(&is_really_nice(&1))
+  end
+
+  def is_really_nice(str) do
+    has_repeating_double_letters(str) && has_three_letter_palindrome(str)
+  end
+
+  def has_repeating_double_letters(str) do
+    String.match?(str, ~r/(..).*\1/)
+  end
+
+  def has_three_letter_palindrome(str) do
+    String.match?(str, ~r/(.).\1/)
   end
 
   def is_nice(str) do
