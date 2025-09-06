@@ -74,20 +74,8 @@ defmodule Day1507Test do
     assert 956 == actual
   end
 
-  describe "part2 examples" do
-    for {input, expected} <- [] do
-      @vars {input, expected}
-
-      test "#{input} -> #{inspect(expected)}}" do
-        {input, expected} = @vars
-        actual = AoC.Day1507.solve(:part2, input)
-        assert expected == actual
-      end
-    end
-  end
-
   test "part2 final" do
     actual = AoC.Day1507.solve(:part2, AoC.fetch_input("2015", "07"))
-    assert "TODO" == actual
+    assert 40149 == actual
   end
 end

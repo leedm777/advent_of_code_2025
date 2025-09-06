@@ -10,20 +10,33 @@ defmodule AoC.Day1507 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    circuit = parse_input(input)
+
+    {:ok, agent} = Agent.start_link(fn -> {circuit, %{}} end)
+    signal = eval(agent, "a")
+    Agent.stop(agent)
+
+    circuit = Map.put(circuit, "b", %{op: "in", input: signal, output: "b"})
+    {:ok, agent} = Agent.start_link(fn -> {circuit, %{}} end)
+    res = eval(agent, "a")
+    Agent.stop(agent)
+    res
   end
 
   def solve(:part1, input, wire) do
-    circuit =
-      for gate <- input |> lines |> Enum.map(&parse_line/1), into: %{} do
-        {gate.output, gate}
-      end
+    circuit = parse_input(input)
 
     {:ok, agent} = Agent.start_link(fn -> {circuit, %{}} end)
     res = eval(agent, wire)
     Agent.stop(agent)
     res
+  end
+
+  def parse_input(input) do
+    for gate <- input |> lines |> Enum.map(&parse_line/1), into: %{} do
+      {gate.output, gate}
+    end
   end
 
   def eval(agent, wire) do
@@ -32,7 +45,9 @@ defmodule AoC.Day1507 do
         val = _eval(agent, wire)
         Agent.update(agent, fn {circuit, memo} -> {circuit, Map.put(memo, wire, val)} end)
         val
-      val -> val
+
+      val ->
+        val
     end
   end
 
