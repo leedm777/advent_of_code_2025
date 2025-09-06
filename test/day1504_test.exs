@@ -1,17 +1,21 @@
 defmodule Day1504Test do
   use ExUnit.Case, async: true
-  use ExUnit.Parameterized
 
   doctest AoC.Day1504
 
-  test_with_params "part1", fn input, expected ->
-    actual = AoC.Day1504.solve(:part1, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-      {"abcdef", 609_043},
-      {"pqrstuv", 1_048_970}
-    ])
+  defmodule PartOneTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"abcdef", 609_043},
+          {"pqrstuv", 1_048_970}
+        ])
+
+    test "part1 examples", %{input: input, expected: expected} do
+      actual = AoC.Day1504.solve(:part1, input)
+      assert expected == actual
+    end
   end
 
   @tag :slow_as_christmas

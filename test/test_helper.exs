@@ -23,30 +23,37 @@ defmodule TestHelper do
       end
     end
   end
+
+  @doc """
+  Expands list of 2-tuples into list of maps for use with parameterized tests.
+
+  ## Examples
+
+      iex> TestHelper.map_example_pairs([{1, "one"}, {2, "two"}])
+      [{input: 1, expected: "one"}, {input: 2, expected: "two"}]
+
+      iex> TestHelper.map_example_pairs([{1, "one"}, {2, "two"}], :num, :word)
+      [{num: 1, word: "one"}, {num: 2, word: "two"}]
+  """
+  def map_example_pairs(examples, lhs \\ :input, rhs \\ :expected) do
+    for {i, e} <- examples do
+      %{lhs => i, rhs => e}
+    end
+  end
 end
 
 defmodule TestHelperTest do
   use ExUnit.Case, async: true
-  use ExUnit.Parameterized
 
-  test_with_params "describe_examples", fn input, expected ->
-    actual = TestHelper.describe_examples(input)
-    assert expected == actual
-  end do
-    [
-      simple: {[{"i", "e"}], [{:"i -> e", {"i", "e"}}]},
-      long: {[{"ThisGetsTruncated", "e"}], [{:"ThisG... -> e", {"ThisGetsTruncated", "e"}}]},
-      multiple:
-        {[
-           {"i1", "e1"},
-           {"i2", "e2"},
-           {"i3", "e3"}
-         ],
-         [
-           "i1 -> e1": {"i1", "e1"},
-           "i2 -> e2": {"i2", "e2"},
-           "i3 -> e3": {"i3", "e3"}
-         ]}
-    ]
+  describe "map_example_pairs" do
+    test "should map list of tuples to maps of input/expected" do
+      actual = TestHelper.map_example_pairs([{1, "one"}, {2, "two"}])
+      assert actual == [%{input: 1, expected: "one"}, %{input: 2, expected: "two"}]
+    end
+
+    test "should use custom keys if given" do
+      actual = TestHelper.map_example_pairs([{1, "one"}, {2, "two"}], :num, :word)
+      assert actual == [%{num: 1, word: "one"}, %{num: 2, word: "two"}]
+    end
   end
 end

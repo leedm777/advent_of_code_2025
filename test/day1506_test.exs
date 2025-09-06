@@ -1,6 +1,5 @@
 defmodule Day1506Test do
   use ExUnit.Case, async: true
-  use ExUnit.Parameterized
 
   doctest AoC.Day1506
 
@@ -17,16 +16,21 @@ defmodule Day1506Test do
     end
   end
 
-  test_with_params "part1 examples", fn input, expected ->
-    actual = AoC.Day1506.solve(:part1, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-      {"turn on 0,0 through 999,999", 1_000_000},
-      {"toggle 0,0 through 999,0", 1000},
-      {"turn off 499,499 through 500,500", 0},
-      {"turn on 0,0 through 999,999\nturn off 499,499 through 500,500", 1_000_000 - 4}
-    ])
+  defmodule PartOneTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"turn on 0,0 through 999,999", 1_000_000},
+          {"toggle 0,0 through 999,0", 1000},
+          {"turn off 499,499 through 500,500", 0},
+          {"turn on 0,0 through 999,999\nturn off 499,499 through 500,500", 1_000_000 - 4}
+        ])
+
+    test "part1 examples", %{input: input, expected: expected} do
+      actual = AoC.Day1506.solve(:part1, input)
+      assert expected == actual
+    end
   end
 
   @tag :slow_as_christmas
@@ -36,14 +40,19 @@ defmodule Day1506Test do
     assert 377_891 == actual
   end
 
-  test_with_params "part2 examples", fn input, expected ->
-    actual = AoC.Day1506.solve(:part2, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-      {"turn on 0,0 through 0,0", 1},
-      {"toggle 0,0 through 999,999", 2_000_000}
-    ])
+  defmodule PartTwoTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"turn on 0,0 through 0,0", 1},
+          {"toggle 0,0 through 999,999", 2_000_000}
+        ])
+
+    test "part 2 examples", %{input: input, expected: expected} do
+      actual = AoC.Day1506.solve(:part2, input)
+      assert expected == actual
+    end
   end
 
   @tag :slow_as_christmas

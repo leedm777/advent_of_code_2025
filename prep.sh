@@ -39,16 +39,21 @@ EOF
 cat > ${TEST} <<EOF
 defmodule Day${YRDY}Test do
   use ExUnit.Case, async: true
-  use ExUnit.Parameterized
 
   doctest AoC.Day${YRDY}
 
-  test_with_params "part1 examples", fn input, expected ->
-    actual = AoC.Day${YRDY}.solve(:part1, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-    ])
+  defmodule PartOneExamplesTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs(
+          [
+          ])
+
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day${YRDY}.solve(:part1, input)
+      assert expected == actual
+    end
   end
 
   test "part1 final" do
@@ -56,12 +61,18 @@ defmodule Day${YRDY}Test do
     assert "TODO" == actual
   end
 
-  test_with_params "part2 examples", fn input, expected ->
-    actual = AoC.Day${YRDY}.solve(:part2, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-    ])
+  defmodule PartTwoExamplesTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs(
+          [
+          ])
+
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day${YRDY}.solve(:part2, input)
+      assert expected == actual
+    end
   end
 
   test "part2 final" do
