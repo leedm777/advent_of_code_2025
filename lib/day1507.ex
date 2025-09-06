@@ -20,42 +20,55 @@ defmodule AoC.Day1507 do
         {gate.output, gate}
       end
 
-    eval(circuit, wire)
+    {:ok, agent} = Agent.start_link(fn -> {circuit, %{}} end)
+    res = eval(agent, wire)
+    Agent.stop(agent)
+    res
   end
 
-  def eval(_, val) when is_integer(val) do
+  def eval(agent, wire) do
+    case Agent.get(agent, fn {_, memo} -> memo[wire] end) do
+      nil ->
+        val = _eval(agent, wire)
+        Agent.update(agent, fn {circuit, memo} -> {circuit, Map.put(memo, wire, val)} end)
+        val
+      val -> val
+    end
+  end
+
+  def _eval(_, val) when is_integer(val) do
     val
   end
 
-  def eval(circuit, wire) do
-    gate = circuit[wire]
+  def _eval(agent, wire) do
+    gate = Agent.get(agent, fn {circuit, _} -> circuit[wire] end)
 
     case gate.op do
       "in" ->
-        eval(circuit, gate.input)
+        eval(agent, gate.input)
 
       "AND" ->
-        lhs = eval(circuit, gate.lhs)
-        rhs = eval(circuit, gate.rhs)
+        lhs = eval(agent, gate.lhs)
+        rhs = eval(agent, gate.rhs)
         lhs &&& rhs
 
       "OR" ->
-        lhs = eval(circuit, gate.lhs)
-        rhs = eval(circuit, gate.rhs)
+        lhs = eval(agent, gate.lhs)
+        rhs = eval(agent, gate.rhs)
         lhs ||| rhs
 
       "LSHIFT" ->
-        lhs = eval(circuit, gate.lhs)
-        rhs = eval(circuit, gate.rhs)
+        lhs = eval(agent, gate.lhs)
+        rhs = eval(agent, gate.rhs)
         lhs <<< rhs
 
       "RSHIFT" ->
-        lhs = eval(circuit, gate.lhs)
-        rhs = eval(circuit, gate.rhs)
+        lhs = eval(agent, gate.lhs)
+        rhs = eval(agent, gate.rhs)
         lhs >>> rhs
 
       "NOT" ->
-        ~~~eval(circuit, gate.input) &&& 0xFFFF
+        ~~~eval(agent, gate.input) &&& 0xFFFF
     end
   end
 

@@ -69,10 +69,9 @@ defmodule Day1507Test do
     end
   end
 
-  @tag :skip
   test "part1 final" do
     actual = AoC.Day1507.solve(:part1, AoC.fetch_input("2015", "07"))
-    assert "TODO" == actual
+    assert 956 == actual
   end
 
   describe "part2 examples" do
