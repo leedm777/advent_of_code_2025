@@ -1,3 +1,4 @@
+ExUnit.configure(exclude: :slow_as_christmas)
 ExUnit.start()
 
 defmodule TestHelper do

@@ -29,6 +29,7 @@ defmodule Day1506Test do
     ])
   end
 
+  @tag :slow_as_christmas
   test "part1 final" do
     actual = AoC.Day1506.solve(:part1, AoC.fetch_input("2015", "06"))
     assert actual < 541_749
@@ -45,6 +46,7 @@ defmodule Day1506Test do
     ])
   end
 
+  @tag :slow_as_christmas
   test "part2 final" do
     actual = AoC.Day1506.solve(:part2, AoC.fetch_input("2015", "06"))
     assert actual > 13_396_307

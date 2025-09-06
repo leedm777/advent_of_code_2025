@@ -10,22 +10,20 @@ defmodule Day1504Test do
   end do
     TestHelper.describe_examples([
       {"abcdef", 609_043},
-      {"pqrstuv", 1_048_970},
-      {AoC.fetch_input("2015", "04"), 282_749}
+      {"pqrstuv", 1_048_970}
     ])
   end
 
-  test "part1 hints" do
+  @tag :slow_as_christmas
+  test "part1 final" do
     actual = AoC.Day1504.solve(:part1, AoC.fetch_input("2015", "04"))
     assert actual < 3_255_144
+    assert actual == 282_749
   end
 
-  test_with_params "part2", fn input, expected ->
-    actual = AoC.Day1504.solve(:part2, input)
-    assert expected == actual
-  end do
-    TestHelper.describe_examples([
-      {AoC.fetch_input("2015", "04"), 9_962_624}
-    ])
+  @tag :slow_as_christmas
+  test "part2 final" do
+    actual = AoC.Day1504.solve(:part2, AoC.fetch_input("2015", "04"))
+    assert 9_962_624 == actual
   end
 end
