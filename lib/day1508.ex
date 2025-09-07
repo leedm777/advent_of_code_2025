@@ -5,16 +5,17 @@ defmodule AoC.Day1508 do
   @impl true
   def solve(:part1, input) do
     lines(input)
-    |> Enum.map(fn str ->
-      {str, parse_str(str)}
-    end)
+    |> Enum.map(fn str -> {str, parse_str(str)} end)
     |> Enum.map(fn {orig, parsed} -> String.length(orig) - String.length(parsed) end)
     |> Enum.sum()
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    lines(input)
+    |> Enum.map(fn str -> {str, encode_str(str)} end)
+    |> Enum.map(fn {orig, encoded} -> String.length(encoded) - String.length(orig) end)
+    |> Enum.sum()
   end
 
   def parse_str(str) do
@@ -54,5 +55,18 @@ defmodule AoC.Day1508 do
       end)
 
     parsed
+  end
+
+  def encode_str(str) do
+    s =
+      Enum.reduce(String.graphemes(str), "", fn ch, acc ->
+        case ch do
+          "\\" -> acc <> "\\\\"
+          "\"" -> acc <> "\\\""
+          _ -> acc <> ch
+        end
+      end)
+
+    "\"#{s}\""
   end
 end

@@ -12,12 +12,15 @@ defmodule Day1508Test do
           {"\"abc\"", 2},
           {"\"aaa\\\"aaa\"", 3},
           {"\"\\x27\"", 5},
-          {Enum.join([
-            "\"\"",
-            "\"abc\"",
-            "\"aaa\\\"aaa\"",
-            "\"\\x27\"",
-          ], "\n"), 12}
+          {Enum.join(
+             [
+               "\"\"",
+               "\"abc\"",
+               "\"aaa\\\"aaa\"",
+               "\"\\x27\""
+             ],
+             "\n"
+           ), 12}
         ])
 
     test "give the expected output", %{input: input, expected: expected} do
@@ -34,7 +37,22 @@ defmodule Day1508Test do
   defmodule PartTwoExamplesTest do
     use ExUnit.Case,
       async: true,
-      parameterize: TestHelper.map_example_pairs([])
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"\"\"", 4},
+          {"\"abc\"", 4},
+          {"\"aaa\\\"aaa\"", 6},
+          {"\"\\x27\"", 5},
+          {Enum.join(
+             [
+               "\"\"",
+               "\"abc\"",
+               "\"aaa\\\"aaa\"",
+               "\"\\x27\""
+             ],
+             "\n"
+           ), 19}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day1508.solve(:part2, input)
@@ -44,6 +62,6 @@ defmodule Day1508Test do
 
   test "part2 final" do
     actual = AoC.Day1508.solve(:part2, AoC.fetch_input("2015", "08"))
-    assert "TODO" == actual
+    assert 2117 == actual
   end
 end
