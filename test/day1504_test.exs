@@ -18,16 +18,24 @@ defmodule Day1504Test do
     end
   end
 
-  @tag :slow_as_christmas
-  test "part1 final" do
-    actual = AoC.Day1504.solve(:part1, AoC.fetch_input("2015", "04"))
-    assert actual < 3_255_144
-    assert actual == 282_749
+  defmodule PartOneFinalTest do
+    use ExUnit.Case, async: true
+
+    @tag :slow_as_christmas
+    test "part1 final" do
+      actual = AoC.Day1504.solve(:part1, AoC.fetch_input("2015", "04"))
+      assert actual < 3_255_144
+      assert actual == 282_749
+    end
   end
 
-  @tag :slow_as_christmas
-  test "part2 final" do
-    actual = AoC.Day1504.solve(:part2, AoC.fetch_input("2015", "04"))
-    assert 9_962_624 == actual
+  defmodule PartTwoFinalTest do
+    use ExUnit.Case, async: true
+
+    @tag :slow_as_christmas
+    test "part2 final" do
+      actual = AoC.Day1504.solve(:part2, AoC.fetch_input("2015", "04"))
+      assert 9_962_624 == actual
+    end
   end
 end
