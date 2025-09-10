@@ -65,18 +65,26 @@ defmodule Day1509Test do
   end
 
   defmodule PartTwoExamplesTest do
-    use ExUnit.Case,
-      async: true,
-      parameterize: TestHelper.map_example_pairs([])
+    use ExUnit.Case, async: true
 
-    test "give the expected output", %{input: input, expected: expected} do
+    test "give the expected output" do
+      input =
+        Enum.join(
+          [
+            "London to Dublin = 464",
+            "London to Belfast = 518",
+            "Dublin to Belfast = 141"
+          ],
+          "\n"
+        )
+
       actual = AoC.Day1509.solve(:part2, input)
-      assert expected == actual
+      assert 982 == actual
     end
   end
 
   test "part2 final" do
     actual = AoC.Day1509.solve(:part2, AoC.fetch_input("2015", "09"))
-    assert "TODO" == actual
+    assert 898 == actual
   end
 end

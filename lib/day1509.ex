@@ -4,31 +4,29 @@ defmodule AoC.Day1509 do
 
   @impl true
   def solve(:part1, input) do
-    graph = lines(input) |> Enum.map(&parse_line/1)
+    {graph, cities} = parse_input(input)
 
-    cities = graph |> Enum.flat_map(fn x -> Tuple.to_list(x.cities) end) |> MapSet.new()
-
-    # add a starting point to the graph
-    graph = graph ++ Enum.map(cities, fn city -> %{cities: {:init, city}, dist: 0} end)
-
-    {:ok, dist, _} = shortest_path(graph, [:init], 0, cities)
+    {:ok, dist, _} = shortest_path(graph, [:init], 0, cities, &Enum.min_by/2)
     dist
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    {graph, cities} = parse_input(input)
+
+    {:ok, dist, _} = shortest_path(graph, [:init], 0, cities, &Enum.max_by/2)
+    dist
   end
 
-  def shortest_path(graph, path, dist, remaining_cities) do
+  def shortest_path(graph, path, dist, remaining_cities, cmp) do
     if Enum.empty?(remaining_cities) do
       {:ok, dist, path}
     else
-      _shortest_path(graph, path, dist, remaining_cities)
+      _shortest_path(graph, path, dist, remaining_cities, cmp)
     end
   end
 
-  def _shortest_path(graph, path, dist, remaining_cities) do
+  def _shortest_path(graph, path, dist, remaining_cities, cmp) do
     current_city = List.first(path)
 
     if MapSet.member?(remaining_cities, current_city) do
@@ -43,12 +41,13 @@ defmodule AoC.Day1509 do
               graph,
               [neighbor | path],
               dist + d,
-              MapSet.delete(remaining_cities, neighbor)
+              MapSet.delete(remaining_cities, neighbor),
+              cmp
             ) do
         {:ok, d, p}
       end
 
-    Enum.min_by(candidates, fn {_, dist, _} -> dist end)
+    cmp.(candidates, fn {_, dist, _} -> dist end)
   end
 
   def edge_distance(graph, src, dst) do
@@ -72,5 +71,15 @@ defmodule AoC.Day1509 do
 
     dist = String.to_integer(dist)
     %{cities: {src, dst}, dist: dist}
+  end
+
+  def parse_input(input) do
+    graph = lines(input) |> Enum.map(&parse_line/1)
+
+    cities = graph |> Enum.flat_map(fn x -> Tuple.to_list(x.cities) end) |> MapSet.new()
+
+    # add a starting point to the graph
+    graph = graph ++ Enum.map(cities, fn city -> %{cities: {:init, city}, dist: 0} end)
+    {graph, cities}
   end
 end
