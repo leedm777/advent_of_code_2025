@@ -32,19 +32,9 @@ defmodule Day1510Test do
     assert 252_594 == actual
   end
 
-  defmodule PartTwoExamplesTest do
-    use ExUnit.Case,
-      async: true,
-      parameterize: TestHelper.map_example_pairs([])
-
-    test "give the expected output", %{input: input, expected: expected} do
-      actual = AoC.Day1510.solve(:part2, input)
-      assert expected == actual
-    end
-  end
-
+  @tag :slow_as_christmas
   test "part2 final" do
     actual = AoC.Day1510.solve(:part2, AoC.fetch_input("2015", "10"))
-    assert "TODO" == actual
+    assert 3_579_328 == actual
   end
 end

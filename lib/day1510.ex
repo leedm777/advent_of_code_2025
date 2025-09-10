@@ -9,8 +9,9 @@ defmodule AoC.Day1510 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    str = look_and_say_iter(String.trim(input), 50)
+    String.length(str)
   end
 
   def look_and_say_iter(str, 0) do
