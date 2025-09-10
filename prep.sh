@@ -7,6 +7,11 @@
 YEAR=$1
 DAY=$2
 
+if test ${YEAR} -lt 2015 -o ${YEAR} -gt 2025; then
+    echo "$0: invalid year; try 20xx" >&2
+    exit 1
+fi
+
 # zero pad the day
 DAY=$(printf "%02d" ${DAY})
 YRDY=${YEAR: -2}$DAY
@@ -15,8 +20,8 @@ LIB=lib/day${YRDY}.ex
 TEST=test/day${YRDY}_test.exs
 
 if test -e ${LIB} || test -e ${TEST}; then
-  echo "$0: file exists; not doing it" >&2
-  exit 1
+    echo "$0: file exists; not doing it" >&2
+    exit 1
 fi
 
 cat > ${LIB} <<EOF
