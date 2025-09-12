@@ -37,4 +37,17 @@ defmodule AoC.Day1511 do
 
     MapSet.size(unique_pairs) >= 2
   end
+
+  def increment_password("") do
+    "a"
+  end
+  def increment_password(str) do
+    {prefix, [last_letter]} = str |> String.graphemes() |> Enum.split(-1)
+    if (last_letter == "z") do
+      increment_password(Enum.join(prefix)) <> "a"
+    else
+      last_char = last_letter |> String.to_charlist() |> List.first()
+      Enum.join(prefix) <> <<last_char + 1>>
+    end
+  end
 end

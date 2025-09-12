@@ -55,6 +55,23 @@ defmodule Day1511Test do
     end
   end
 
+  defmodule IncrementPasswordExamplesTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+    TestHelper.map_example_pairs([
+      {"", "a"},
+      {"aa", "ab"},
+      {"az", "ba"},
+      {"zzz", "aaaa"}
+    ])
+
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day1511.increment_password(input)
+      assert expected == actual
+    end
+  end
+
   defmodule PartOneExamplesTest do
     use ExUnit.Case,
       async: true,
