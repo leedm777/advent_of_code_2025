@@ -92,7 +92,7 @@ defmodule Day1511Test do
 
   test "part1 final" do
     actual = AoC.Day1511.solve(:part1, AoC.fetch_input("2015", "11"))
-    assert "TODO" == actual
+    assert "cqjxxyzz" == actual
   end
 
   defmodule PartTwoExamplesTest do

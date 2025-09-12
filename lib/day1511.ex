@@ -6,7 +6,7 @@ defmodule AoC.Day1511 do
   def solve(:part1, input) do
     password = String.trim(input)
 
-    next_password(password)
+    password |> skip_invalid_passwords() |> next_password()
   end
 
   @impl true
@@ -52,20 +52,48 @@ defmodule AoC.Day1511 do
     else
       last_char = (last_letter |> String.to_charlist() |> List.first()) + 1
       # optimize; go ahead and skip character we know are invalid
-      if last_char == ?i || last_char == ?o || last_char == ?l do
-        Enum.join(prefix) <> <<last_char + 1>>
-      else
-        Enum.join(prefix) <> <<last_char>>
-      end
+      Enum.join(prefix) <> <<make_valid_char(last_char)>>
     end
   end
 
   def next_password(str) do
     next = increment_password(str)
+
     if !has_invalid_letter?(next) && has_ascending_letters?(next) && has_enough_pairs?(next) do
       next
     else
       next_password(next)
     end
+  end
+
+  def make_valid_char(ch) do
+    if ch == ?i || ch == ?o || ch == ?l do
+      ch + 1
+    else
+      ch
+    end
+  end
+
+  def skip_invalid_passwords(str) do
+    {_, valid_charlist} =
+      str
+      |> String.to_charlist()
+      |> Enum.reduce({:search, ~c""}, fn ch, {state, acc} ->
+        case {state, ch} do
+          {:skip, _} ->
+            {:skip, acc ++ [?a]}
+
+          {:search, ch} ->
+            valid_ch = make_valid_char(ch)
+
+            if valid_ch == ch do
+              {:search, acc ++ [ch]}
+            else
+              {:skip, acc ++ [valid_ch]}
+            end
+        end
+      end)
+
+    to_string(valid_charlist)
   end
 end
