@@ -20,6 +20,23 @@ defmodule Day1511Test do
     end
   end
 
+  defmodule HasInvalidLettersExamplesTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"abc", false},
+          {"abcjieurij", true},
+          {"kdheieejnixyz", true},
+          {"ndhrnekcuensk", false}
+        ])
+
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day1511.has_invalid_letter?(input)
+      assert expected == actual
+    end
+  end
+
   defmodule PartOneExamplesTest do
     use ExUnit.Case,
       async: true,

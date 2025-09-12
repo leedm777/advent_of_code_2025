@@ -25,4 +25,8 @@ defmodule AoC.Day1511 do
     IO.puts("#{str}, #{cnt}")
     cnt == 3
   end
+
+  def has_invalid_letter?(str) do
+    String.match?(str, ~r/[iol]/)
+  end
 end
