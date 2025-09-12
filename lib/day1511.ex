@@ -22,11 +22,19 @@ defmodule AoC.Day1511 do
         end
       end)
 
-    IO.puts("#{str}, #{cnt}")
     cnt == 3
   end
 
   def has_invalid_letter?(str) do
     String.match?(str, ~r/[iol]/)
+  end
+
+  def has_enough_pairs?(str) do
+    unique_pairs =
+      Regex.scan(~r/([a-z])\1/, str)
+      |> Enum.map(&List.first/1)
+      |> MapSet.new()
+
+    MapSet.size(unique_pairs) >= 2
   end
 end

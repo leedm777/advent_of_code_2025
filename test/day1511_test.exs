@@ -37,6 +37,24 @@ defmodule Day1511Test do
     end
   end
 
+  defmodule HasEnoughPairsExamplesTest do
+    use ExUnit.Case,
+      async: true,
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"", false},
+          {"aa", false},
+          {"aaa", false},
+          {"abcdef", false},
+          {"aabb", true}
+        ])
+
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day1511.has_enough_pairs?(input)
+      assert expected == actual
+    end
+  end
+
   defmodule PartOneExamplesTest do
     use ExUnit.Case,
       async: true,
