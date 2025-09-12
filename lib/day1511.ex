@@ -1,6 +1,5 @@
 defmodule AoC.Day1511 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -10,8 +9,10 @@ defmodule AoC.Day1511 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    password = String.trim(input)
+
+    password |> skip_invalid_passwords() |> next_password() |> next_password()
   end
 
   def has_ascending_letters?(str) do
