@@ -3,8 +3,10 @@ defmodule AoC.Day1511 do
   import AoC.Solution
 
   @impl true
-  def solve(:part1, _input) do
-    "TODO"
+  def solve(:part1, input) do
+    password = String.trim(input)
+
+    next_password(password)
   end
 
   @impl true
@@ -41,13 +43,29 @@ defmodule AoC.Day1511 do
   def increment_password("") do
     "a"
   end
+
   def increment_password(str) do
     {prefix, [last_letter]} = str |> String.graphemes() |> Enum.split(-1)
-    if (last_letter == "z") do
+
+    if last_letter == "z" do
       increment_password(Enum.join(prefix)) <> "a"
     else
-      last_char = last_letter |> String.to_charlist() |> List.first()
-      Enum.join(prefix) <> <<last_char + 1>>
+      last_char = (last_letter |> String.to_charlist() |> List.first()) + 1
+      # optimize; go ahead and skip character we know are invalid
+      if last_char == ?i || last_char == ?o || last_char == ?l do
+        Enum.join(prefix) <> <<last_char + 1>>
+      else
+        Enum.join(prefix) <> <<last_char>>
+      end
+    end
+  end
+
+  def next_password(str) do
+    next = increment_password(str)
+    if !has_invalid_letter?(next) && has_ascending_letters?(next) && has_enough_pairs?(next) do
+      next
+    else
+      next_password(next)
     end
   end
 end

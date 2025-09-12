@@ -59,12 +59,15 @@ defmodule Day1511Test do
     use ExUnit.Case,
       async: true,
       parameterize:
-    TestHelper.map_example_pairs([
-      {"", "a"},
-      {"aa", "ab"},
-      {"az", "ba"},
-      {"zzz", "aaaa"}
-    ])
+        TestHelper.map_example_pairs([
+          {"", "a"},
+          {"aa", "ab"},
+          {"az", "ba"},
+          {"zzz", "aaaa"},
+          {"k", "m"},
+          {"n", "p"},
+          {"h", "j"}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day1511.increment_password(input)
@@ -75,7 +78,11 @@ defmodule Day1511Test do
   defmodule PartOneExamplesTest do
     use ExUnit.Case,
       async: true,
-      parameterize: TestHelper.map_example_pairs([])
+      parameterize:
+        TestHelper.map_example_pairs([
+          {"abcdefgh", "abcdffaa"},
+          {"ghijklmn", "ghjaabcc"}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day1511.solve(:part1, input)
