@@ -2,26 +2,23 @@ defmodule AoC.Day1506 do
   @behaviour AoC.Solution
   import AoC.Solution
 
-  @grid (for row <- 0..999, col <- 0..999, into: %{} do
-           {{row, col}, false}
-         end)
-
-  @bright_grid (for row <- 0..999, col <- 0..999, into: %{} do
-                  {{row, col}, 0}
-                end)
-
   @impl true
   def solve(:part1, input) do
+    grid =
+      for row <- 0..999, col <- 0..999, into: %{} do
+        {{row, col}, false}
+      end
+
     lines(input)
     |> Enum.map(&parse_line(&1))
-    |> Enum.reduce(@grid, fn %{
-                               cmd: cmd,
-                               start_row: start_row,
-                               start_col: start_col,
-                               end_row: end_row,
-                               end_col: end_col
-                             },
-                             acc ->
+    |> Enum.reduce(grid, fn %{
+                              cmd: cmd,
+                              start_row: start_row,
+                              start_col: start_col,
+                              end_row: end_row,
+                              end_col: end_col
+                            },
+                            acc ->
       for row <- start_row..end_row, col <- start_col..end_col, into: acc do
         v =
           case cmd do
@@ -38,16 +35,21 @@ defmodule AoC.Day1506 do
 
   @impl true
   def solve(:part2, input) do
+    bright_grid =
+      for row <- 0..999, col <- 0..999, into: %{} do
+        {{row, col}, 0}
+      end
+
     lines(input)
     |> Enum.map(&parse_line(&1))
-    |> Enum.reduce(@bright_grid, fn %{
-                                      cmd: cmd,
-                                      start_row: start_row,
-                                      start_col: start_col,
-                                      end_row: end_row,
-                                      end_col: end_col
-                                    },
-                                    acc ->
+    |> Enum.reduce(bright_grid, fn %{
+                                     cmd: cmd,
+                                     start_row: start_row,
+                                     start_col: start_col,
+                                     end_row: end_row,
+                                     end_col: end_col
+                                   },
+                                   acc ->
       for row <- start_row..end_row, col <- start_col..end_col, into: acc do
         v =
           case cmd do
