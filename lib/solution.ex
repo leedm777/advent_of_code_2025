@@ -41,4 +41,26 @@ defmodule AoC.Solution do
       "^" -> {row - 1, col}
     end
   end
+
+  @spec permutations(lst :: list(any())) :: list(list(any()))
+  def permutations([]) do
+    [[]]
+  end
+
+  def permutations(lst) do
+    for item <- lst,
+        rest <- permutations(lst -- [item]) do
+      [item | rest]
+    end
+  end
+
+  @spec circular_permutations(lst :: list(any())) :: list(list(any()))
+  def circular_permutations([]) do
+    []
+  end
+
+  def circular_permutations(lst) do
+    [head | rest] = lst
+    rest |> permutations() |> Enum.map(&[head | &1])
+  end
 end
