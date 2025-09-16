@@ -12,8 +12,13 @@ defmodule AoC.Day1513 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    rules = lines(input) |> Enum.map(&parse_line/1)
+    people = rules |> Enum.map(& &1.who) |> Enum.uniq()
+    people = [:me | people]
+    tables = circular_permutations(people)
+
+    tables |> Enum.map(&score_happiness(&1, rules)) |> Enum.max()
   end
 
   def parse_line(line) do
@@ -38,6 +43,7 @@ defmodule AoC.Day1513 do
     pairs = Enum.zip(table, rot)
 
     for {a, b} <- pairs,
+        a != :me && b != :me,
         r1 = Enum.find(rules, &(&1.who == a && &1.neighbor == b)),
         r2 = Enum.find(rules, &(&1.who == b && &1.neighbor == a)),
         reduce: 0 do
