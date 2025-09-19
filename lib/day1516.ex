@@ -30,8 +30,21 @@ defmodule AoC.Day1516 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    sues = input |> lines() |> Enum.map(&parse_line/1)
+
+    {sue_num, _} =
+      Enum.find(sues, fn {_, props} ->
+        Enum.all?(props, fn {pname, pval} ->
+          case pname do
+            p when p in ["cats", "trees"] -> pval > @mfcsam_scan[pname]
+            p when p in ["pomeranians", "goldfish"] -> pval < @mfcsam_scan[pname]
+            _ -> pval == @mfcsam_scan[pname]
+          end
+        end)
+      end)
+
+    sue_num
   end
 
   def parse_line(line) do
