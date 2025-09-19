@@ -14,8 +14,15 @@ defmodule AoC.Day1515 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    ingredients = input |> lines() |> Enum.map(&parse_line/1)
+
+    mix(ingredients, 100, [0, 0, 0, 0, 0])
+    |> Enum.filter(fn [_, _, _, _, cal] -> cal == 500 end)
+    |> Enum.map(fn [cap, dur, fla, tex, _] ->
+      max(cap, 0) * max(dur, 0) * max(fla, 0) * max(tex, 0)
+    end)
+    |> Enum.max()
   end
 
   def parse_line(line) do
