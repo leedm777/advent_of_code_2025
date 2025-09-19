@@ -46,12 +46,12 @@ defmodule AoC do
           input = fetch_input(year, day),
           task1 = Task.async(fn -> module.solve(:part1, input) end),
           task2 = Task.async(fn -> module.solve(:part2, input) end),
-          t <- [{year, day, 2, task2}, {year, day, 1, task1}] do
+          t <- [{year, day, 1, task1}, {year, day, 2, task2}] do
         t
       end
 
-    for {year, day, part, task} <- Enum.reverse(answers) do
-      answer = Task.await(task)
+    for {year, day, part, task} <- answers do
+      answer = Task.await(task, :infinity)
       IO.puts("#{year}-#{day}.#{part}: #{answer}")
     end
   end
