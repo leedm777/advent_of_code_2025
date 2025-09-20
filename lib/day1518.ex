@@ -3,19 +3,33 @@ defmodule AoC.Day1518 do
   import AoC.Solution
 
   @impl true
-  def solve(:part1, input) do
-    solve(:part1, input, 100)
-  end
-
-  @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(part, input) do
+    solve(part, input, 100)
   end
 
   def solve(:part1, input, steps) do
     board = parse_board(input)
-    {_, _, lit} = animate(board, steps)
+    {_, _, lit} = animate(board, steps, false)
     MapSet.size(lit)
+  end
+
+  def solve(:part2, input, steps) do
+    board = light_corners(parse_board(input))
+    {_, _, lit} = animate(board, steps, true)
+    MapSet.size(lit)
+  end
+
+  def light_corners({num_rows, num_cols, lit}) do
+    {num_rows, num_cols,
+     MapSet.union(
+       lit,
+       MapSet.new([
+         {0, 0},
+         {num_rows - 1, 0},
+         {0, num_cols - 1},
+         {num_rows - 1, num_cols - 1}
+       ])
+     )}
   end
 
   def parse_board(input) do
@@ -34,11 +48,11 @@ defmodule AoC.Day1518 do
     {num_rows, num_cols, lit}
   end
 
-  def animate(board, 0) do
+  def animate(board, 0, _) do
     board
   end
 
-  def animate({num_rows, num_cols, lit}, n) do
+  def animate({num_rows, num_cols, lit}, n, light_corners?) do
     next_lit =
       for row_num <- 0..(num_rows - 1),
           col_num <- 0..(num_cols - 1),
@@ -49,7 +63,14 @@ defmodule AoC.Day1518 do
         {row_num, col_num}
       end
 
-    animate({num_rows, num_cols, next_lit}, n - 1)
+    next_board =
+      if light_corners? do
+        light_corners({num_rows, num_cols, next_lit})
+      else
+        {num_rows, num_cols, next_lit}
+      end
+
+    animate(next_board, n - 1, light_corners?)
   end
 
   def count_lit_neighbors(lit, row_num, col_num) do

@@ -49,19 +49,13 @@ defmodule Day1518Test do
     assert 821 == actual
   end
 
-  defmodule PartTwoExamplesTest do
-    use ExUnit.Case,
-      async: true,
-      parameterize: TestHelper.map_example_pairs([])
-
-    test "give the expected output", %{input: input, expected: expected} do
-      actual = AoC.Day1518.solve(:part2, input)
-      assert expected == actual
-    end
+  test "part2 give the expected output" do
+    actual = AoC.Day1518.solve(:part2, @input, 5)
+    assert 17 == actual
   end
 
   test "part2 final" do
     actual = AoC.Day1518.solve(:part2, AoC.fetch_input("2015", "18"))
-    assert "TODO" == actual
+    assert 886 == actual
   end
 end
