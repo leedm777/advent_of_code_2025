@@ -3,17 +3,14 @@ defmodule Day1518Test do
 
   doctest AoC.Day1518
 
-  @input Enum.join(
-           [
-             ".#.#.#",
-             "...##.",
-             "#....#",
-             "..#...",
-             "#.#..#",
-             "####.."
-           ],
-           "\n"
-         )
+  @input [
+    ".#.#.#",
+    "...##.",
+    "#....#",
+    "..#...",
+    "#.#..#",
+    "####.."
+  ]
 
   test "parse_board" do
     actual = AoC.Day1518.parse_board(@input)

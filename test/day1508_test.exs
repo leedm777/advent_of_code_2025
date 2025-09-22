@@ -8,19 +8,16 @@ defmodule Day1508Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"\"\"", 2},
-          {"\"abc\"", 2},
-          {"\"aaa\\\"aaa\"", 3},
-          {"\"\\x27\"", 5},
-          {Enum.join(
-             [
-               "\"\"",
-               "\"abc\"",
-               "\"aaa\\\"aaa\"",
-               "\"\\x27\""
-             ],
-             "\n"
-           ), 12}
+          {["\"\""], 2},
+          {["\"abc\""], 2},
+          {["\"aaa\\\"aaa\""], 3},
+          {["\"\\x27\""], 5},
+          {[
+             "\"\"",
+             "\"abc\"",
+             "\"aaa\\\"aaa\"",
+             "\"\\x27\""
+           ], 12}
         ])
 
     test "give the expected output", %{input: input, expected: expected} do
@@ -39,19 +36,16 @@ defmodule Day1508Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"\"\"", 4},
-          {"\"abc\"", 4},
-          {"\"aaa\\\"aaa\"", 6},
-          {"\"\\x27\"", 5},
-          {Enum.join(
-             [
-               "\"\"",
-               "\"abc\"",
-               "\"aaa\\\"aaa\"",
-               "\"\\x27\""
-             ],
-             "\n"
-           ), 19}
+          {["\"\""], 4},
+          {["\"abc\""], 4},
+          {["\"aaa\\\"aaa\""], 6},
+          {["\"\\x27\""], 5},
+          {[
+             "\"\"",
+             "\"abc\"",
+             "\"aaa\\\"aaa\"",
+             "\"\\x27\""
+           ], 19}
         ])
 
     test "give the expected output", %{input: input, expected: expected} do

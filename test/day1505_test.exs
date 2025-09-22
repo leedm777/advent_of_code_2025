@@ -111,21 +111,18 @@ defmodule Day1505Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"ugknbfddgicrmopn", 1},
-          {"aaa", 1},
-          {"jchzalrnumimnmhp", 0},
-          {"haegwjzuvuyypxyu", 0},
-          {"dvszwmarrgswjxmb", 0},
-          {Enum.join(
-             [
-               "ugknbfddgicrmopn",
-               "aaa",
-               "jchzalrnumimnmhp",
-               "haegwjzuvuyypxyu",
-               "dvszwmarrgswjxmb"
-             ],
-             "\n"
-           ), 2}
+          {["ugknbfddgicrmopn"], 1},
+          {["aaa"], 1},
+          {["jchzalrnumimnmhp"], 0},
+          {["haegwjzuvuyypxyu"], 0},
+          {["dvszwmarrgswjxmb"], 0},
+          {[
+             "ugknbfddgicrmopn",
+             "aaa",
+             "jchzalrnumimnmhp",
+             "haegwjzuvuyypxyu",
+             "dvszwmarrgswjxmb"
+           ], 2}
         ])
 
     test "part1 examples", %{input: input, expected: expected} do
@@ -139,14 +136,11 @@ defmodule Day1505Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"qjhvhtzxzqqjkmpb", 1},
-          {"xxyxx", 1},
-          {"uurcxstgmygtbstg", 0},
-          {"ieodomkazucvgmuy", 0},
-          {Enum.join(
-             ["qjhvhtzxzqqjkmpb", "xxyxx", "uurcxstgmygtbstg", "ieodomkazucvgmuy"],
-             "\n"
-           ), 2}
+          {["qjhvhtzxzqqjkmpb"], 1},
+          {["xxyxx"], 1},
+          {["uurcxstgmygtbstg"], 0},
+          {["ieodomkazucvgmuy"], 0},
+          {["qjhvhtzxzqqjkmpb", "xxyxx", "uurcxstgmygtbstg", "ieodomkazucvgmuy"], 2}
         ])
 
     test "part 2 examples", %{input: input, expected: expected} do

@@ -18,7 +18,7 @@ defmodule Day1515Test do
   end
 
   test "part1 example give the expected output" do
-    actual = AoC.Day1515.solve(:part1, Enum.join(@example, "\n"))
+    actual = AoC.Day1515.solve(:part1, @example)
     assert 62_842_880 == actual
   end
 
@@ -28,7 +28,7 @@ defmodule Day1515Test do
   end
 
   test "part2 example give the expected output" do
-    actual = AoC.Day1515.solve(:part2, Enum.join(@example, "\n"))
+    actual = AoC.Day1515.solve(:part2, @example)
     assert 57_600_000 == actual
   end
 

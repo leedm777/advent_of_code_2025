@@ -56,7 +56,27 @@ defmodule AoC do
     end
   end
 
+  @doc """
+  Fetch the input for a given year and day.
+  """
+  @spec fetch_input(integer, integer) :: [String.t()]
   def fetch_input(year, day) do
-    GenServer.call(AoC.Input, {:fetch, year, day})
+    GenServer.call(AoC.Input, {:fetch, year, day}) |> lines()
+  end
+
+  @doc ~S"""
+  Split a string into lines, handling trailing newline correctly.
+
+  ## Examples
+
+  iex> AoC.lines("foo\nbar")
+  ["foo", "bar"]
+
+  iex> AoC.lines("foo\nbar\n")
+  ["foo", "bar"]
+  """
+  @spec lines(String.t()) :: [String.t()]
+  def lines(input) do
+    input |> String.trim() |> String.split("\n")
   end
 end

@@ -4,7 +4,7 @@ defmodule AoC.Day1513 do
 
   @impl true
   def solve(:part1, input) do
-    rules = lines(input) |> Enum.map(&parse_line/1)
+    rules = input |> Enum.map(&parse_line/1)
     people = rules |> Enum.map(& &1.who) |> Enum.uniq()
     tables = circular_permutations(people)
 
@@ -13,7 +13,7 @@ defmodule AoC.Day1513 do
 
   @impl true
   def solve(:part2, input) do
-    rules = lines(input) |> Enum.map(&parse_line/1)
+    rules = input |> Enum.map(&parse_line/1)
     people = rules |> Enum.map(& &1.who) |> Enum.uniq()
     people = [:me | people]
     tables = circular_permutations(people)

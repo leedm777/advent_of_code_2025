@@ -44,15 +44,11 @@ defmodule Day1509Test do
     use ExUnit.Case, async: true
 
     test "give the expected output" do
-      input =
-        Enum.join(
-          [
-            "London to Dublin = 464",
-            "London to Belfast = 518",
-            "Dublin to Belfast = 141"
-          ],
-          "\n"
-        )
+      input = [
+        "London to Dublin = 464",
+        "London to Belfast = 518",
+        "Dublin to Belfast = 141"
+      ]
 
       actual = AoC.Day1509.solve(:part1, input)
       assert 605 == actual
@@ -68,15 +64,11 @@ defmodule Day1509Test do
     use ExUnit.Case, async: true
 
     test "give the expected output" do
-      input =
-        Enum.join(
-          [
-            "London to Dublin = 464",
-            "London to Belfast = 518",
-            "Dublin to Belfast = 141"
-          ],
-          "\n"
-        )
+      input = [
+        "London to Dublin = 464",
+        "London to Belfast = 518",
+        "Dublin to Belfast = 141"
+      ]
 
       actual = AoC.Day1509.solve(:part2, input)
       assert 982 == actual

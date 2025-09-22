@@ -3,7 +3,7 @@ defmodule AoC.Day1503 do
   import AoC.Solution
 
   @impl true
-  def solve(:part1, input) do
+  def solve(:part1, [input]) do
     %{visited: visited} =
       input
       |> String.graphemes()
@@ -18,7 +18,7 @@ defmodule AoC.Day1503 do
   end
 
   @impl true
-  def solve(:part2, input) do
+  def solve(:part2, [input]) do
     %{visited: visited} =
       input
       |> String.trim()

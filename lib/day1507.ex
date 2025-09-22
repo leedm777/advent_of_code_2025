@@ -1,6 +1,5 @@
 defmodule AoC.Day1507 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   import Bitwise
 
@@ -34,7 +33,7 @@ defmodule AoC.Day1507 do
   end
 
   def parse_input(input) do
-    for gate <- input |> lines |> Enum.map(&parse_line/1), into: %{} do
+    for gate <- input |> Enum.map(&parse_line/1), into: %{} do
       {gate.output, gate}
     end
   end

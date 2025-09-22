@@ -8,9 +8,9 @@ defmodule Day1503Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {">", 2},
-          {"^>v<", 4},
-          {"^v^v^v^v^v", 2},
+          {[">"], 2},
+          {["^>v<"], 4},
+          {["^v^v^v^v^v"], 2},
           {AoC.fetch_input("2015", "03"), 2565}
         ])
 
@@ -25,9 +25,9 @@ defmodule Day1503Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"^v", 3},
-          {"^>v<", 3},
-          {"^v^v^v^v^v", 11},
+          {["^v"], 3},
+          {["^>v<"], 3},
+          {["^v^v^v^v^v"], 11},
           {AoC.fetch_input("2015", "03"), 2639}
         ])
 

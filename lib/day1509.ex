@@ -1,6 +1,5 @@
 defmodule AoC.Day1509 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -74,7 +73,7 @@ defmodule AoC.Day1509 do
   end
 
   def parse_input(input) do
-    graph = lines(input) |> Enum.map(&parse_line/1)
+    graph = input |> Enum.map(&parse_line/1)
 
     cities = graph |> Enum.flat_map(fn x -> Tuple.to_list(x.cities) end) |> MapSet.new()
 

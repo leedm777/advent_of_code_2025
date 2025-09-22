@@ -1,10 +1,9 @@
 defmodule AoC.Day1515 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
-    ingredients = input |> lines() |> Enum.map(&parse_line/1)
+    ingredients = input |> Enum.map(&parse_line/1)
 
     mix(ingredients, 100, [0, 0, 0, 0, 0])
     |> Enum.map(fn [cap, dur, fla, tex, _] ->
@@ -15,7 +14,7 @@ defmodule AoC.Day1515 do
 
   @impl true
   def solve(:part2, input) do
-    ingredients = input |> lines() |> Enum.map(&parse_line/1)
+    ingredients = input |> Enum.map(&parse_line/1)
 
     mix(ingredients, 100, [0, 0, 0, 0, 0])
     |> Enum.filter(fn [_, _, _, _, cal] -> cal == 500 end)

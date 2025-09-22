@@ -13,7 +13,7 @@ defmodule Day1504Test do
         ])
 
     test "part1 examples", %{input: input, expected: expected} do
-      actual = AoC.Day1504.solve(:part1, input)
+      actual = AoC.Day1504.solve(:part1, [input])
       assert expected == actual
     end
   end

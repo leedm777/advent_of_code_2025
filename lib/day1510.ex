@@ -1,16 +1,15 @@
 defmodule AoC.Day1510 do
   @behaviour AoC.Solution
-  # import AoC.Solution
 
   @impl true
-  def solve(:part1, input) do
-    str = look_and_say_iter(String.trim(input), 40)
+  def solve(:part1, [input]) do
+    str = look_and_say_iter(input, 40)
     String.length(str)
   end
 
   @impl true
-  def solve(:part2, input) do
-    str = look_and_say_iter(String.trim(input), 50)
+  def solve(:part2, [input]) do
+    str = look_and_say_iter(input, 50)
     String.length(str)
   end
 

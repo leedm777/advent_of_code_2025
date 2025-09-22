@@ -1,6 +1,5 @@
 defmodule AoC.Day1517 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -13,12 +12,12 @@ defmodule AoC.Day1517 do
   end
 
   def solve(:part1, input, amount) do
-    containers = input |> lines() |> Enum.map(&String.to_integer/1)
+    containers = input |> Enum.map(&String.to_integer/1)
     count_combinations(amount, containers)
   end
 
   def solve(:part2, input, amount) do
-    containers = input |> lines() |> Enum.map(&String.to_integer/1)
+    containers = input |> Enum.map(&String.to_integer/1)
     combinations = find_combinations(amount, containers, [])
     smallest_combinations = combinations |> Enum.map(&length(&1)) |> Enum.min()
     Enum.count(combinations, fn c -> length(c) == smallest_combinations end)

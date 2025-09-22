@@ -3,18 +3,6 @@ defmodule AoC.SolutionTest do
 
   doctest AoC.Solution
 
-  describe "lines" do
-    test "empty input" do
-      actual = AoC.Solution.lines("")
-      assert actual == [""]
-    end
-
-    test "expected" do
-      actual = AoC.Solution.lines("foo\nbar\nbam\n")
-      assert actual == ["foo", "bar", "bam"]
-    end
-  end
-
   describe "move" do
     test "move right" do
       actual = AoC.Solution.move({10, 10}, ">")

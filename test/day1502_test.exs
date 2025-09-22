@@ -8,9 +8,9 @@ defmodule Day1502Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"2x3x4", 58},
-          {"1x1x10", 43},
-          {"2x3x4\n1x1x10\n", 58 + 43},
+          {["2x3x4"], 58},
+          {["1x1x10"], 43},
+          {["2x3x4", "1x1x10"], 58 + 43},
           {AoC.fetch_input("2015", "02"), 1_598_415}
         ])
 
@@ -25,9 +25,9 @@ defmodule Day1502Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"2x3x4", 34},
-          {"1x1x10", 14},
-          {"2x3x4\n1x1x10\n", 34 + 14},
+          {["2x3x4"], 34},
+          {["1x1x10"], 14},
+          {["2x3x4", "1x1x10"], 34 + 14},
           {AoC.fetch_input("2015", "02"), 3_812_909}
         ])
 

@@ -1,6 +1,5 @@
 defmodule AoC.Day1516 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @mfcsam_scan %{
     "children" => 3,
@@ -17,7 +16,7 @@ defmodule AoC.Day1516 do
 
   @impl true
   def solve(:part1, input) do
-    sues = input |> lines() |> Enum.map(&parse_line/1)
+    sues = input |> Enum.map(&parse_line/1)
 
     {sue_num, _} =
       Enum.find(sues, fn {_, props} ->
@@ -31,7 +30,7 @@ defmodule AoC.Day1516 do
 
   @impl true
   def solve(:part2, input) do
-    sues = input |> lines() |> Enum.map(&parse_line/1)
+    sues = input |> Enum.map(&parse_line/1)
 
     {sue_num, _} =
       Enum.find(sues, fn {_, props} ->

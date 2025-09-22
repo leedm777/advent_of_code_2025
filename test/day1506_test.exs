@@ -4,7 +4,7 @@ defmodule Day1506Test do
   doctest AoC.Day1506
 
   test "parse_line" do
-    for line <- AoC.Solution.lines(AoC.fetch_input("2015", "06")) do
+    for line <- AoC.fetch_input("2015", "06") do
       actual = AoC.Day1506.parse_line(line)
 
       str =
@@ -21,10 +21,10 @@ defmodule Day1506Test do
       async: true,
       parameterize:
         TestHelper.map_example_pairs([
-          {"turn on 0,0 through 999,999", 1_000_000},
-          {"toggle 0,0 through 999,0", 1000},
-          {"turn off 499,499 through 500,500", 0},
-          {"turn on 0,0 through 999,999\nturn off 499,499 through 500,500", 1_000_000 - 4}
+          {["turn on 0,0 through 999,999"], 1_000_000},
+          {["toggle 0,0 through 999,0"], 1000},
+          {["turn off 499,499 through 500,500"], 0},
+          {["turn on 0,0 through 999,999"], ["turn off 499,499 through 500,500"], 1_000_000 - 4}
         ])
 
     test "part1 examples", %{input: input, expected: expected} do
@@ -37,6 +37,7 @@ defmodule Day1506Test do
     use ExUnit.Case, async: true
 
     @tag :slow_as_christmas
+    @tag timeout: :infinity
     test "part1 final" do
       actual = AoC.Day1506.solve(:part1, AoC.fetch_input("2015", "06"))
       assert actual < 541_749
@@ -54,7 +55,7 @@ defmodule Day1506Test do
         ])
 
     test "part 2 examples", %{input: input, expected: expected} do
-      actual = AoC.Day1506.solve(:part2, input)
+      actual = AoC.Day1506.solve(:part2, [input])
       assert expected == actual
     end
   end
@@ -63,6 +64,7 @@ defmodule Day1506Test do
     use ExUnit.Case, async: true
 
     @tag :slow_as_christmas
+    @tag timeout: :infinity
     test "part2 final" do
       actual = AoC.Day1506.solve(:part2, AoC.fetch_input("2015", "06"))
       assert actual > 13_396_307

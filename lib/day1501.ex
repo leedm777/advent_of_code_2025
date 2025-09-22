@@ -2,7 +2,7 @@ defmodule AoC.Day1501 do
   @behaviour AoC.Solution
 
   @impl true
-  def solve(:part1, input) do
+  def solve(:part1, [input]) do
     input
     |> String.graphemes()
     |> Enum.reduce(
@@ -16,7 +16,7 @@ defmodule AoC.Day1501 do
   end
 
   @impl true
-  def solve(:part2, input) do
+  def solve(:part2, [input]) do
     input
     |> String.graphemes()
     |> Enum.reduce_while(

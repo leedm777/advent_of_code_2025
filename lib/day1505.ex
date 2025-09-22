@@ -1,15 +1,14 @@
 defmodule AoC.Day1505 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
-    lines(input) |> Enum.count(&is_nice?(&1))
+    input |> Enum.count(&is_nice?(&1))
   end
 
   @impl true
   def solve(:part2, input) do
-    lines(input) |> Enum.count(&is_really_nice?(&1))
+    input |> Enum.count(&is_really_nice?(&1))
   end
 
   def is_really_nice?(str) do

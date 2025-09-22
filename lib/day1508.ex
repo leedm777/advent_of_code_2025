@@ -1,10 +1,9 @@
 defmodule AoC.Day1508 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
-    lines(input)
+    input
     |> Enum.map(fn str -> {str, parse_str(str)} end)
     |> Enum.map(fn {orig, parsed} -> String.length(orig) - String.length(parsed) end)
     |> Enum.sum()
@@ -12,7 +11,7 @@ defmodule AoC.Day1508 do
 
   @impl true
   def solve(:part2, input) do
-    lines(input)
+    input
     |> Enum.map(fn str -> {str, encode_str(str)} end)
     |> Enum.map(fn {orig, encoded} -> String.length(encoded) - String.length(orig) end)
     |> Enum.sum()

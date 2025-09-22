@@ -2,13 +2,13 @@ defmodule AoC.Day1504 do
   @behaviour AoC.Solution
 
   @impl true
-  def solve(:part1, input) do
-    mine_advent_coin(String.trim(input), 1, 20)
+  def solve(:part1, [input]) do
+    mine_advent_coin(input, 1, 20)
   end
 
   @impl true
-  def solve(:part2, input) do
-    mine_advent_coin(String.trim(input), 1, 24)
+  def solve(:part2, [input]) do
+    mine_advent_coin(input, 1, 24)
   end
 
   def mine_advent_coin(secret, val, num_leading_zero_bits) do

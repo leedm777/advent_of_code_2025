@@ -1,6 +1,5 @@
 defmodule AoC.Day1518 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(part, input) do
@@ -33,7 +32,7 @@ defmodule AoC.Day1518 do
   end
 
   def parse_board(input) do
-    lns = Enum.with_index(lines(input))
+    lns = Enum.with_index(input)
 
     lit =
       for {row, row_num} <- lns,

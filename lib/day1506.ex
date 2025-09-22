@@ -1,6 +1,5 @@
 defmodule AoC.Day1506 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -9,7 +8,7 @@ defmodule AoC.Day1506 do
         {{row, col}, false}
       end
 
-    lines(input)
+    input
     |> Enum.map(&parse_line(&1))
     |> Enum.reduce(grid, fn %{
                               cmd: cmd,
@@ -40,7 +39,7 @@ defmodule AoC.Day1506 do
         {{row, col}, 0}
       end
 
-    lines(input)
+    input
     |> Enum.map(&parse_line(&1))
     |> Enum.reduce(bright_grid, fn %{
                                      cmd: cmd,

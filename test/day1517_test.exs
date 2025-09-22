@@ -4,7 +4,7 @@ defmodule Day1517Test do
   doctest AoC.Day1517
 
   test "part1 example give the expected output" do
-    actual = AoC.Day1517.solve(:part1, Enum.join([20, 15, 10, 5, 5], "\n"), 25)
+    actual = AoC.Day1517.solve(:part1, ["20", "15", "10", "5", "5"], 25)
     assert 4 == actual
   end
 
@@ -14,7 +14,7 @@ defmodule Day1517Test do
   end
 
   test "part2 example give the expected output" do
-    actual = AoC.Day1517.solve(:part2, Enum.join([20, 15, 10, 5, 5], "\n"), 25)
+    actual = AoC.Day1517.solve(:part2, ["20", "15", "10", "5", "5"], 25)
     assert 3 == actual
   end
 

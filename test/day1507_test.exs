@@ -56,20 +56,16 @@ defmodule Day1507Test do
         )
 
     test "should put the expected value on the wire", %{wire: wire, expected: expected} do
-      input =
-        Enum.join(
-          [
-            "123 -> x",
-            "456 -> y",
-            "x AND y -> d",
-            "x OR y -> e",
-            "x LSHIFT 2 -> f",
-            "y RSHIFT 2 -> g",
-            "NOT x -> h",
-            "NOT y -> i"
-          ],
-          "\n"
-        )
+      input = [
+        "123 -> x",
+        "456 -> y",
+        "x AND y -> d",
+        "x OR y -> e",
+        "x LSHIFT 2 -> f",
+        "y RSHIFT 2 -> g",
+        "NOT x -> h",
+        "NOT y -> i"
+      ]
 
       actual = AoC.Day1507.solve(:part1, input, wire)
       assert expected == actual

@@ -1,6 +1,5 @@
 defmodule AoC.Day1514 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -14,17 +13,13 @@ defmodule AoC.Day1514 do
 
   def solve(:part1, input, flight_time) do
     input
-    |> lines()
     |> Enum.map(&parse_line/1)
     |> Enum.map(&distance_flown(&1, flight_time))
     |> Enum.max()
   end
 
   def solve(:part2, input, flight_time) do
-    deer =
-      input
-      |> lines()
-      |> Enum.map(&parse_line/1)
+    deer = Enum.map(input, &parse_line/1)
 
     scores = Enum.map(deer, &{&1.name, 0})
 

@@ -8,22 +8,6 @@ defmodule AoC.Solution do
   """
   @callback solve(part :: :part1 | :part2, input :: [String.t()]) :: String.t()
 
-  @doc ~S"""
-  Split a string into lines, handling trailing newline correctly.
-
-  ## Examples
-
-      iex> AoC.Solution.lines("foo\nbar")
-      ["foo", "bar"]
-
-      iex> AoC.Solution.lines("foo\nbar\n")
-      ["foo", "bar"]
-  """
-  @spec lines(String.t()) :: [String.t()]
-  def lines(input) do
-    input |> String.trim() |> String.split("\n")
-  end
-
   @typedoc """
   A two-dimensional integer position. Given as `{row, col}`.
   """

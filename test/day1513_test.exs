@@ -34,8 +34,7 @@ defmodule Day1513Test do
   end
 
   test "the example" do
-    input = Enum.join(@input, "\n")
-    actual = AoC.Day1513.solve(:part1, input)
+    actual = AoC.Day1513.solve(:part1, @input)
     assert 330 == actual
   end
 

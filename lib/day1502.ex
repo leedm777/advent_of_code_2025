@@ -1,11 +1,9 @@
 defmodule AoC.Day1502 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
     input
-    |> lines()
     |> Enum.map(&wrapping_area(&1))
     |> Enum.sum()
   end
@@ -13,7 +11,6 @@ defmodule AoC.Day1502 do
   @impl true
   def solve(:part2, input) do
     input
-    |> lines()
     |> Enum.map(&bow_length(&1))
     |> Enum.sum()
   end
