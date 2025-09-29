@@ -12,10 +12,10 @@ defmodule Day1519Test do
           {["H => HO", "H => OH", "O => HH", "", "HOHOHO"], 7}
         ])
 
-        test "give the expected output", %{input: input, expected: expected} do
-          actual = AoC.Day1519.solve(:part1, input)
-          assert expected == actual
-        end
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day1519.solve(:part1, input)
+      assert expected == actual
+    end
   end
 
   test "part1 final" do
@@ -23,10 +23,19 @@ defmodule Day1519Test do
     assert 518 == actual
   end
 
+  test "parse_molecule" do
+    actual = AoC.Day1519.parse_molecule("CRnFYFYFAr")
+    assert actual == ["C", "Rn", "F", "Y", "F", "Y", "F", "Ar"]
+  end
+
   defmodule PartTwoExamplesTest do
     use ExUnit.Case,
       async: true,
-      parameterize: TestHelper.map_example_pairs([])
+      parameterize:
+        TestHelper.map_example_pairs([
+          {["e => H", "e => O", "H => HO", "H => OH", "O => HH", "", "HOH"], 3},
+          {["e => H", "e => O", "H => HO", "H => OH", "O => HH", "", "HOHOHO"], 6}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day1519.solve(:part2, input)
@@ -34,6 +43,7 @@ defmodule Day1519Test do
     end
   end
 
+  @tag timeout: :infinity
   test "part2 final" do
     actual = AoC.Day1519.solve(:part2, AoC.fetch_input("2015", "19"))
     assert "TODO" == actual
