@@ -1,6 +1,5 @@
 defmodule AoC.Day2501 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -8,8 +7,8 @@ defmodule AoC.Day2501 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, input) do
+    decode_password2(Enum.map(input, &parse_rotation/1), 50, 0)
   end
 
   def decode_password([], _ptr, ctr) do
@@ -25,5 +24,32 @@ defmodule AoC.Day2501 do
 
     # IO.puts(:stderr, "#{next} => #{next_ptr}, #{next_ctr}")
     decode_password(rest, next_ptr, next_ctr)
+  end
+
+  def decode_password2([], _ptr, ctr) do
+    ctr
+  end
+
+  def decode_password2([next | rest], 0, ctr) do
+    next_ptr = Integer.mod(next, 100)
+    full_turns = abs(div(next, 100))
+    next_ctr = ctr + full_turns
+    # IO.puts(:stderr, "#{next} => #{next_ptr}, #{next_ctr}")
+    decode_password2(rest, next_ptr, next_ctr)
+  end
+
+  def decode_password2([next | rest], ptr, ctr) do
+    next_ptr = Integer.mod(ptr + next, 100)
+    full_turns = abs(div(next, 100))
+    extra = if next_ptr == 0 || next < 0 && next_ptr > ptr || next > 0 && next_ptr < ptr, do: 1, else: 0
+    next_ctr = ctr + full_turns + extra
+    # IO.puts(:stderr, "#{next} => #{next_ptr}, #{next_ctr}")
+    decode_password2(rest, next_ptr, next_ctr)
+  end
+
+  def parse_rotation(str) do
+    dir = String.first(str)
+    abs_steps = String.to_integer(String.slice(str, 1..100))
+    if dir == "R", do: abs_steps, else: -abs_steps
   end
 end

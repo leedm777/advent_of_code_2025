@@ -29,6 +29,7 @@ defmodule Day2501Test do
       parameterize:
         TestHelper.map_example_pairs(
           [
+            {["L68","L30","R48","L5","R60","L55","L1","L99","R14","L82"], 6}
           ])
 
     test "give the expected output", %{input: input, expected: expected} do
@@ -39,6 +40,8 @@ defmodule Day2501Test do
 
   test "part2 final" do
     actual = AoC.Day2501.solve(:part2, AoC.fetch_input("2025", "01"))
-    assert "TODO" == actual
+    assert 1963 != actual
+    assert 6034 != actual
+    assert 6099 == actual
   end
 end
