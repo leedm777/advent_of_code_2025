@@ -47,4 +47,8 @@ defmodule AoC.Solution do
     [head | rest] = lst
     rest |> permutations() |> Enum.map(&[head | &1])
   end
+
+  def now_str() do
+    Timex.format!(Timex.local(), "{ISO:Extended}")
+  end
 end

@@ -23,7 +23,8 @@ defmodule AdventOfCode2025.MixProject do
   defp deps do
     [
       {:req, "~> 0.5"},
-      {:jason, "~> 1.4"}
+      {:jason, "~> 1.4"},
+      {:timex, "~> 3.7"}
     ]
   end
 end

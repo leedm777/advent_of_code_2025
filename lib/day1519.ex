@@ -1,5 +1,6 @@
 defmodule AoC.Day1519 do
   @behaviour AoC.Solution
+  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -56,9 +57,9 @@ defmodule AoC.Day1519 do
   end
 
   def build_molecule([{candidate, depth} | rem_candidates], target, replacements, seen) do
-    if rem(MapSet.size(seen), 1000) == 0 do
-      IO.puts("#{depth}, #{length(rem_candidates)}, #{MapSet.size(seen)}")
-    end
+    IO.puts(
+      "#{now_str()} #{depth}, #{length(rem_candidates)}, #{MapSet.size(seen)}, #{length(candidate)} => #{length(target)}"
+    )
 
     # find the first mismatching element between the candidate and the target
     first_mismatch =
@@ -71,10 +72,9 @@ defmodule AoC.Day1519 do
 
       # if there's no replacement for the candidate's mismatching element,
       # then we are at a dead end and we can drop this candidate
-      MapSet.member?(seen, candidate) ||
-        length(candidate) > length(target) ||
+      length(candidate) > length(target) ||
           (first_mismatch != nil && replacements[elem(first_mismatch, 0)] == nil) ->
-        build_molecule(rem_candidates, target, replacements, MapSet.put(seen, candidate))
+        build_molecule(rem_candidates, target, replacements, seen)
 
       # plausible candidate. append all possible replacements to rem_candidates and
       # keep trying
@@ -82,12 +82,20 @@ defmodule AoC.Day1519 do
         next =
           for {e, index} <- Enum.with_index(candidate),
               rep <- Map.get(replacements, e, []),
-              {prefix, [_ | suffix]} = Enum.split(candidate, index) do
+              {prefix, [_ | suffix]} = Enum.split(candidate, index),
+              into: MapSet.new([]) do
             prefix ++ rep ++ suffix
           end
 
-        next = next |> Enum.uniq() |> Enum.map(&{&1, depth + 1})
-        build_molecule(rem_candidates ++ next, target, replacements, MapSet.put(seen, candidate))
+        next = MapSet.difference(next, seen)
+        next_candidates = next |> MapSet.to_list() |> Enum.map(&{&1, depth + 1})
+
+        build_molecule(
+          rem_candidates ++ next_candidates,
+          target,
+          replacements,
+          MapSet.union(seen, next)
+        )
     end
   end
 
