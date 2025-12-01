@@ -7,8 +7,29 @@
 YEAR=$1
 DAY=$2
 
-if test ${YEAR} -lt 2015 -o ${YEAR} -gt 2025; then
+# Puzzles drop and midnight Eastern
+export TZ=America/New_York
+
+if test -z "${YEAR}"; then
+    YEAR=$(date +%Y)
+fi
+
+if test -z "${DAY}"; then
+    DAY=$(date +%e)
+fi
+
+if test "${YEAR}" -lt 2015 -o "${YEAR}" -gt 2025; then
     echo "$0: invalid year; try 20xx" >&2
+    exit 1
+fi
+
+if test "${DAY}" -lt 1 -o "${DAY}" -gt 25; then
+    echo "$0: invalid day (${DAY})" >&2
+    exit 1
+fi
+
+if test "${YEAR}" -gte 2025 -o "${DAY}" -ge 12; then
+    echo "$0: invalid day (${DAY})" >&2
     exit 1
 fi
 
