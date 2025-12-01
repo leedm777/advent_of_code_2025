@@ -82,7 +82,7 @@ defmodule AoC.Day1507 do
         lhs >>> rhs
 
       "NOT" ->
-        ~~~eval(agent, gate.input) &&& 0xFFFF
+        Bitwise.bnot(eval(agent, gate.input)) &&& 0xFFFF
     end
   end
 
