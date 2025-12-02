@@ -12,8 +12,12 @@ defmodule AoC.Day2502 do
   end
 
   @impl true
-  def solve(:part2, _input) do
-    "TODO"
+  def solve(:part2, [input]) do
+    rangesStr = String.split(input, ",")
+    ranges = Enum.map(rangesStr, &parse_range/1)
+    for r <- ranges, i <- r, s = "#{i}", Regex.match?(~r/^([0-9]+)\1+$/, s), reduce: 0 do
+      acc -> acc + i
+    end
   end
 
   def parse_range(str) do
