@@ -28,8 +28,8 @@ if test "${DAY}" -lt 1 -o "${DAY}" -gt 25; then
     exit 1
 fi
 
-if test "${YEAR}" -ge 2025 -o "${DAY}" -ge 12; then
-    echo "$0: invalid day (${DAY})" >&2
+if test "${YEAR}" -ge 2025 -a "${DAY}" -gt 12; then
+    echo "$0: invalid day (${DAY}) for 2025" >&2
     exit 1
 fi
 
