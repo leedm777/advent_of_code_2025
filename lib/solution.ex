@@ -26,6 +26,16 @@ defmodule AoC.Solution do
     end
   end
 
+  def get_grid(grid, {row, col}, void_ch \\ ".") do
+    cond do
+      row < 0 -> void_ch
+      col < 0 -> void_ch
+      row >= length(grid) -> void_ch
+      col >= length(Enum.at(grid, 0)) -> void_ch
+      true -> grid |> Enum.at(row) |> Enum.at(col)
+    end
+  end
+
   @spec permutations(lst :: list(any())) :: list(list(any()))
   def permutations([]) do
     [[]]
