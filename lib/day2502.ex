@@ -1,6 +1,5 @@
 defmodule AoC.Day2502 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, [input]) do
