@@ -35,18 +35,28 @@ defmodule AoC.Day2503 do
 
   def really_largest_jolt(bank) do
     num_to_drop = length(bank) - 12
-    really_largest_jolt(bank, num_to_drop, 0)
+    max_joltage(bank, num_to_drop, 0)
   end
 
-  def really_largest_jolt([], _, acc) do
-    ac
+  def max_joltage([], 0, acc) do
+    acc
   end
 
-  def really_largest_jolt([j | rest], 0, acc) do
-    really_largest_jolt(rest, 0, acc * 10 + j)
+  def max_joltage([n | rest], 0, acc) do
+    max_joltage(rest, 0, acc * 10 + n)
   end
 
-  def really_largest_jolt(bank, num_to_drop, acc) do
+  def max_joltage([m, n | rest], num_to_drop, acc) when n >= m do
+    # next number is larger, and we have more to drop. Drop it
+    max_joltage([n | rest], num_to_drop - 1, acc)
+  end
 
+  def max_joltage(bank, num_to_drop, acc) do
+    if num_to_drop >= length(bank) do
+      acc
+    else
+      [m | rest] = bank
+      max_joltage(rest, num_to_drop, acc * 10 + m)
+    end
   end
 end
