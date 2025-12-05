@@ -7,21 +7,20 @@ defmodule Day2504Test do
     use ExUnit.Case,
       async: true,
       parameterize:
-        TestHelper.map_example_pairs(
-          [
-            {[
-              "..@@.@@@@.",
-              "@@@.@.@.@@",
-              "@@@@@.@.@@",
-              "@.@@@@..@.",
-              "@@.@@@@.@@",
-              ".@@@@@@@.@",
-              ".@.@.@.@@@",
-              "@.@@@.@@@@",
-              ".@@@@@@@@.",
-              "@.@.@@@.@."
-            ], 13}
-          ])
+        TestHelper.map_example_pairs([
+          {[
+             "..@@.@@@@.",
+             "@@@.@.@.@@",
+             "@@@@@.@.@@",
+             "@.@@@@..@.",
+             "@@.@@@@.@@",
+             ".@@@@@@@.@",
+             ".@.@.@.@@@",
+             "@.@@@.@@@@",
+             ".@@@@@@@@.",
+             "@.@.@@@.@."
+           ], 13}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day2504.solve(:part1, input)
@@ -38,9 +37,20 @@ defmodule Day2504Test do
     use ExUnit.Case,
       async: true,
       parameterize:
-        TestHelper.map_example_pairs(
-          [
-          ])
+        TestHelper.map_example_pairs([
+          {[
+             "..@@.@@@@.",
+             "@@@.@.@.@@",
+             "@@@@@.@.@@",
+             "@.@@@@..@.",
+             "@@.@@@@.@@",
+             ".@@@@@@@.@",
+             ".@.@.@.@@@",
+             "@.@@@.@@@@",
+             ".@@@@@@@@.",
+             "@.@.@@@.@."
+           ], 43}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day2504.solve(:part2, input)
@@ -50,6 +60,6 @@ defmodule Day2504Test do
 
   test "part2 final" do
     actual = AoC.Day2504.solve(:part2, AoC.fetch_input("2025", "04"))
-    assert "TODO" == actual
+    assert 8936 == actual
   end
 end
