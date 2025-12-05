@@ -5,6 +5,7 @@ defmodule AoC.Day2502 do
   def solve(:part1, [input]) do
     rangesStr = String.split(input, ",")
     ranges = Enum.map(rangesStr, &parse_range/1)
+
     for r <- ranges, i <- r, s = "#{i}", Regex.match?(~r/^([0-9]+)\1$/, s), reduce: 0 do
       acc -> acc + i
     end
@@ -14,6 +15,7 @@ defmodule AoC.Day2502 do
   def solve(:part2, [input]) do
     rangesStr = String.split(input, ",")
     ranges = Enum.map(rangesStr, &parse_range/1)
+
     for r <- ranges, i <- r, s = "#{i}", Regex.match?(~r/^([0-9]+)\1+$/, s), reduce: 0 do
       acc -> acc + i
     end

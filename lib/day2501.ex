@@ -41,7 +41,12 @@ defmodule AoC.Day2501 do
   def decode_password2([next | rest], ptr, ctr) do
     next_ptr = Integer.mod(ptr + next, 100)
     full_turns = abs(div(next, 100))
-    extra = if next_ptr == 0 || next < 0 && next_ptr > ptr || next > 0 && next_ptr < ptr, do: 1, else: 0
+
+    extra =
+      if next_ptr == 0 || (next < 0 && next_ptr > ptr) || (next > 0 && next_ptr < ptr),
+        do: 1,
+        else: 0
+
     next_ctr = ctr + full_turns + extra
     # IO.puts(:stderr, "#{next} => #{next_ptr}, #{next_ctr}")
     decode_password2(rest, next_ptr, next_ctr)

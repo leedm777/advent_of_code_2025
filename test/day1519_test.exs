@@ -12,10 +12,10 @@ defmodule Day1519Test do
           {["H => HO", "H => OH", "O => HH", "", "HOHOHO"], 7}
         ])
 
-        test "give the expected output", %{input: input, expected: expected} do
-          actual = AoC.Day1519.solve(:part1, input)
-          assert expected == actual
-        end
+    test "give the expected output", %{input: input, expected: expected} do
+      actual = AoC.Day1519.solve(:part1, input)
+      assert expected == actual
+    end
   end
 
   test "part1 final" do

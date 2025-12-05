@@ -51,7 +51,7 @@ defmodule AoC.Day2504 do
   end
 
   def move_all(cnt, grid) do
-#    print_grid(grid)
+    #    print_grid(grid)
 
     next_grid =
       for {row, row_num} <- Enum.with_index(grid) do
