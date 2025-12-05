@@ -8,7 +8,10 @@ defmodule AoC.Day2503 do
 
   @impl true
   def solve(:part2, input) do
-    input |> Enum.map(&parse_bank/1) |> Enum.map(&really_largest_jolt/1) |> Enum.sum()
+    input
+    |> Enum.map(&parse_bank/1)
+    |> Enum.map(&really_largest_jolt/1)
+    |> Enum.sum()
   end
 
   def largest_jolt(bank) do
@@ -33,30 +36,30 @@ defmodule AoC.Day2503 do
     for ch <- :binary.bin_to_list(str), do: ch - ?0
   end
 
-  def really_largest_jolt(bank) do
-    num_to_drop = length(bank) - 12
-    max_joltage(bank, num_to_drop, 0)
+  def really_largest_jolt(b) do
+    really_largest_jolt(b, 12, 0)
+    # |> tap(&IO.puts(:stderr, "#{Enum.join(b)} -> #{&1}"))
   end
 
-  def max_joltage([], 0, acc) do
+  def really_largest_jolt(bank, num_cells, acc) when num_cells > length(bank) do
+    raise "Not enough cells left: #{inspect(bank)}, #{num_cells}, #{acc}"
+  end
+
+  def really_largest_jolt(_, 0, acc) do
     acc
   end
 
-  def max_joltage([n | rest], 0, acc) do
-    max_joltage(rest, 0, acc * 10 + n)
+  def really_largest_jolt(bank, num_cells, acc) when num_cells == length(bank) do
+    [n | rest] = bank
+    really_largest_jolt(rest, num_cells - 1, acc * 10 + n)
   end
 
-  def max_joltage([m, n | rest], num_to_drop, acc) when n >= m do
-    # next number is larger, and we have more to drop. Drop it
-    max_joltage([n | rest], num_to_drop - 1, acc)
-  end
+  def really_largest_jolt(bank, num_cells, acc) do
+    # IO.puts(:stderr, "  #{acc} #{Enum.join(bank)}, #{num_cells}")
+    head = Enum.slice(bank, 0, length(bank) - num_cells + 1)
+    max = Enum.max(head)
+    idx = Enum.find_index(head, fn x -> x == max end)
 
-  def max_joltage(bank, num_to_drop, acc) do
-    if num_to_drop >= length(bank) do
-      acc
-    else
-      [m | rest] = bank
-      max_joltage(rest, num_to_drop, acc * 10 + m)
-    end
+    really_largest_jolt(Enum.slice(bank, idx + 1, 9999), num_cells - 1, acc * 10 + max)
   end
 end
