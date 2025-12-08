@@ -42,7 +42,27 @@ defmodule Day2507Test do
   defmodule PartTwoExamplesTest do
     use ExUnit.Case,
       async: true,
-      parameterize: TestHelper.map_example_pairs([])
+      parameterize:
+        TestHelper.map_example_pairs([
+          {[
+             ".......S.......",
+             "...............",
+             ".......^.......",
+             "...............",
+             "......^.^......",
+             "...............",
+             ".....^.^.^.....",
+             "...............",
+             "....^.^...^....",
+             "...............",
+             "...^.^...^.^...",
+             "...............",
+             "..^...^.....^..",
+             "...............",
+             ".^.^.^.^.^...^.",
+             "..............."
+           ], 40}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day2507.solve(:part2, input)
@@ -52,6 +72,6 @@ defmodule Day2507Test do
 
   test "part2 final" do
     actual = AoC.Day2507.solve(:part2, AoC.fetch_input("2025", "07"))
-    assert "TODO" == actual
+    assert 12_472_142_047_197 == actual
   end
 end
