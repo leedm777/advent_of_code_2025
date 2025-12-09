@@ -80,6 +80,6 @@ defmodule Day2508Test do
 
   test "part2 final" do
     actual = AoC.Day2508.solve(:part2, AoC.fetch_input("2025", "08"))
-    assert 25325968 == actual
+    assert 25_325_968 == actual
   end
 end
