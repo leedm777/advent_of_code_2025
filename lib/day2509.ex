@@ -67,19 +67,22 @@ defmodule AoC.Day2509 do
 
     # print_border(border, {min_x, min_y}, {max_x, max_y})
 
-    ## TODO: sort by largest permiter, then find first that's contained in border
-    for {tile1, idx1} <- Enum.with_index(red_tiles),
-        {tile2, idx2} <- Enum.with_index(red_tiles),
-        idx1 < idx2,
-        graph_contains(border, tile1, tile2, {min_x, min_y}),
-        reduce: 0 do
-      max_area ->
-        IO.puts(:stderr, "#{idx1}, #{idx2}")
+    areas =
+      for {tile1, idx1} <- Enum.with_index(red_tiles),
+          {tile2, idx2} <- Enum.with_index(red_tiles),
+          idx1 < idx2 do
         {x1, y1} = tile1
         {x2, y2} = tile2
-        area = (abs(x1 - x2) + 1) * (abs(y1 - y2) + 1)
-        max(area, max_area)
-    end
+        {(abs(x1 - x2) + 1) * (abs(y1 - y2) + 1), tile1, tile2}
+      end
+      |> Enum.sort_by(&elem(&1, 0), :desc)
+
+    {largest, _, _} =
+      Enum.find(areas, fn {_, t1, t2} ->
+        graph_contains(border, t1, t2, {min_x, min_y})
+      end)
+
+    largest
   end
 
   def parse_line(line) do
@@ -135,7 +138,7 @@ defmodule AoC.Day2509 do
 
         if y < y1 || inside do
           {:cont, {next_left, next_right}}
-        elses
+        else
           # IO.puts("  #{inspect({x1, y})}")
           {:halt, false}
         end

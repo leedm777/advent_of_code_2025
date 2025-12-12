@@ -58,8 +58,9 @@ defmodule Day2509Test do
   end
 
   @tag timeout: :infinity
+  @tag :slow_as_christmas
   test "part2 final" do
     actual = AoC.Day2509.solve(:part2, AoC.fetch_input("2025", "09"))
-    assert 1637556834 == actual
+    assert 1_637_556_834 == actual
   end
 end
