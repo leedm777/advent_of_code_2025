@@ -60,6 +60,6 @@ defmodule Day2509Test do
   @tag timeout: :infinity
   test "part2 final" do
     actual = AoC.Day2509.solve(:part2, AoC.fetch_input("2025", "09"))
-    assert "TODO" == actual
+    assert 1637556834 == actual
   end
 end

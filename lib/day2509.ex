@@ -67,6 +67,7 @@ defmodule AoC.Day2509 do
 
     # print_border(border, {min_x, min_y}, {max_x, max_y})
 
+    ## TODO: sort by largest permiter, then find first that's contained in border
     for {tile1, idx1} <- Enum.with_index(red_tiles),
         {tile2, idx2} <- Enum.with_index(red_tiles),
         idx1 < idx2,
@@ -134,7 +135,7 @@ defmodule AoC.Day2509 do
 
         if y < y1 || inside do
           {:cont, {next_left, next_right}}
-        else
+        elses
           # IO.puts("  #{inspect({x1, y})}")
           {:halt, false}
         end
