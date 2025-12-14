@@ -22,6 +22,7 @@ defmodule AdventOfCode2025.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:priority_queue, "~> 1.1"},
       {:req, "~> 0.5"},
       {:jason, "~> 1.4"}
     ]

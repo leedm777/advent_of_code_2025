@@ -57,4 +57,76 @@ defmodule AoC.Solution do
     [head | rest] = lst
     rest |> permutations() |> Enum.map(&[head | &1])
   end
+
+  @spec find_path(
+          T,
+          (T -> boolean()),
+          (T -> list({integer(), T})),
+          (T -> integer())
+        ) :: list(T)
+        when T: var
+  def find_path(start, is_goal, get_neighbors, h) do
+    open = [{h.(start), start}] |> Enum.into(PriorityQueue.new())
+    came_from = Map.new()
+    find_path_n(is_goal, get_neighbors, h, open, came_from, %{start => 0})
+  end
+
+  @spec find_path_n(
+          (T -> boolean()),
+          (T -> list({integer(), T})),
+          (T -> integer()),
+          PriorityQueue.t(),
+          %{T => T},
+          %{T => integer}
+        ) :: list(T)
+        when T: var
+  def find_path_n(is_goal, get_neighbors, h, open, came_from, cost) do
+    case PriorityQueue.pop(open, {:empty, nil}) do
+      {{:empty, _}, _} ->
+        nil
+
+      {{_prio, current}, next_open} ->
+        # IO.puts(:stderr, "#{inspect(current, charlists: :as_lists)} (#{prio}})")
+
+        if is_goal.(current) do
+          path_to(came_from, current)
+          # |> tap(&IO.puts(:stderr, "  " <> inspect(&1, charlists: :as_lists)))
+        else
+          current_cost = Map.get(cost, current)
+
+          {next_open, next_came_from, next_cost} =
+            get_neighbors.(current)
+            # |> tap(&IO.puts(:stderr, "  #{inspect(&1)}"))
+            |> Enum.reduce(
+              {next_open, came_from, cost},
+              fn {step_cost, neighbor}, {next_open, next_came_from, next_cost} ->
+                cost_to_neighbor = current_cost + step_cost
+
+                if cost_to_neighbor < Map.get(next_cost, neighbor, :infinity) do
+                  # new path to the neighbor
+                  f = cost_to_neighbor + h.(neighbor)
+
+                  {
+                    PriorityQueue.put(next_open, f, neighbor),
+                    Map.put(next_came_from, neighbor, current),
+                    Map.put(next_cost, neighbor, cost_to_neighbor)
+                  }
+                else
+                  {next_open, next_came_from, next_cost}
+                end
+              end
+            )
+
+          find_path_n(is_goal, get_neighbors, h, next_open, next_came_from, next_cost)
+        end
+    end
+  end
+
+  @spec path_to(%{T => T}, T) :: list(T) when T: var
+  def path_to(came_from, node) do
+    case Map.get(came_from, node) do
+      nil -> []
+      prior -> [node | path_to(came_from, prior)]
+    end
+  end
 end

@@ -1,5 +1,6 @@
 defmodule AoC.Day2510 do
   @behaviour AoC.Solution
+  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -86,56 +87,40 @@ defmodule AoC.Day2510 do
   end
 
   def solve_joltage({wanted_joltage, buttons}) do
-    init_joltage = Enum.map(wanted_joltage, fn _ -> 0 end)
-    solve_joltage(wanted_joltage, buttons, [{init_joltage, []}], MapSet.new())
+    {wanted_joltage, buttons}
+    start = Enum.map(wanted_joltage, fn _ -> 0 end)
+
+    IO.puts(:stderr, inspect(wanted_joltage, charlists: :as_lists))
+
+    find_path(
+      start,
+      # is_goal
+      fn j -> j == wanted_joltage end,
+      # get_neighbors
+      fn j ->
+        buttons
+        |> Enum.map(&press_button(&1, j))
+        |> Enum.filter(&is_valid(wanted_joltage, &1))
+        |> Enum.map(&{1, &1})
+      end,
+      # h
+      fn joltage ->
+        Enum.zip(wanted_joltage, joltage)
+        |> Enum.reduce(0, fn {w, j}, acc ->
+          acc + (w - j)
+        end)
+      end
+    )
+    |> tap(&IO.puts("  " <> inspect(&1, charlists: :as_lists)))
   end
 
-  def solve_joltage(wanted_joltage, _buttons, [{joltage, keypresses} | _queue], _visited)
-      when wanted_joltage == joltage do
-    keypresses
+  def press_button(button, joltage) do
+    Enum.reduce(button, joltage, fn idx, next_joltage ->
+      List.update_at(next_joltage, idx, &(&1 + 1))
+    end)
   end
 
-  def solve_joltage(_wanted_joltage, _buttons, [], _visited) do
-    nil
-  end
-
-  def solve_joltage(wanted_joltage, buttons, [{joltage, keypresses} | queue], visited) do
-    # IO.puts(:stderr, inspect(%{q_length: length(queue), v_length: MapSet.size(visited)}))
-
-    cond do
-      # we've been here before; skip
-      MapSet.member?(visited, joltage) ->
-        # IO.puts(:stderr, "  skip revisit")
-        solve_joltage(wanted_joltage, buttons, queue, visited)
-
-      # keep searching
-      true ->
-        next_visited = MapSet.put(visited, joltage)
-
-        q2 =
-          Enum.map(buttons, &press_button(&1, joltage, keypresses))
-          |> Enum.filter(fn {next_joltage, _} ->
-            !MapSet.member?(visited, next_joltage) &&
-              Enum.zip(wanted_joltage, next_joltage) |> Enum.all?(fn {w, j} -> j <= w end)
-          end)
-
-        case Enum.find(q2, fn {next_joltage, _} -> next_joltage == wanted_joltage end) do
-          nil ->
-            solve_joltage(wanted_joltage, buttons, queue ++ q2, next_visited)
-
-          soln ->
-            IO.puts("Skipping #{length(queue)} queue items")
-            solve_joltage(wanted_joltage, buttons, [soln], next_visited)
-        end
-    end
-  end
-
-  def press_button(button, joltage, keypresses) do
-    j =
-      Enum.reduce(button, joltage, fn idx, j ->
-        List.update_at(j, idx, &(&1 + 1))
-      end)
-
-    {j, [button | keypresses]}
+  def is_valid(wanted_joltage, joltage) do
+    Enum.zip(wanted_joltage, joltage) |> Enum.all?(fn {w, j} -> w >= j end)
   end
 end
