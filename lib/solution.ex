@@ -6,7 +6,7 @@ defmodule AoC.Solution do
   @doc """
   Solve a puzzle.
   """
-  @callback solve(part :: :part1 | :part2, input :: [String.t()]) :: String.t()
+  @callback solve(part :: :part1 | :part2, input :: [String.t()]) :: integer() | String.t()
 
   @typedoc """
   A two-dimensional integer position. Given as `{row, col}`.
@@ -58,35 +58,39 @@ defmodule AoC.Solution do
     rest |> permutations() |> Enum.map(&[head | &1])
   end
 
-  @spec find_path(
-          T,
-          (T -> boolean()),
-          (T -> list({integer(), T})),
-          (T -> integer())
-        ) :: list(T)
-        when T: var
+  # @spec find_path(
+  #         T,
+  #         (T -> boolean()),
+  #         (T -> list({integer(), T})),
+  #         (T -> integer())
+  #       ) :: list(T)
+  #       when T: var
   def find_path(start, is_goal, get_neighbors, h) do
     open = [{h.(start), start}] |> Enum.into(PriorityQueue.new())
     came_from = Map.new()
+
     find_path_n(is_goal, get_neighbors, h, open, came_from, %{start => 0})
   end
 
-  @spec find_path_n(
-          (T -> boolean()),
-          (T -> list({integer(), T})),
-          (T -> integer()),
-          PriorityQueue.t(),
-          %{T => T},
-          %{T => integer}
-        ) :: list(T)
-        when T: var
+  # @spec find_path_n(
+  #         (T -> boolean()),
+  #         (T -> list({integer(), T})),
+  #         (T -> integer()),
+  #         PriorityQueue.t(),
+  #         %{T => T},
+  #         %{T => integer}
+  #       ) :: list(T)
+  #       when T: var
   def find_path_n(is_goal, get_neighbors, h, open, came_from, cost) do
     case PriorityQueue.pop(open, {:empty, nil}) do
       {{:empty, _}, _} ->
         nil
 
       {{_prio, current}, next_open} ->
-        # IO.puts(:stderr, "#{inspect(current, charlists: :as_lists)} (#{prio}})")
+        # IO.puts(
+        #   :stderr,
+        #   "#{inspect({current, PriorityQueue.to_list(next_open)}, charlists: :as_lists)} (#{prio})"
+        # )
 
         if is_goal.(current) do
           path_to(came_from, current)
@@ -125,7 +129,7 @@ defmodule AoC.Solution do
   @spec path_to(%{T => T}, T) :: list(T) when T: var
   def path_to(came_from, node) do
     case Map.get(came_from, node) do
-      nil -> []
+      nil -> [node]
       prior -> [node | path_to(came_from, prior)]
     end
   end
