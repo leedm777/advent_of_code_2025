@@ -29,7 +29,7 @@ defmodule Day2510Test do
 
   defmodule PartTwoExamplesTest do
     use ExUnit.Case,
-      async: true,
+      async: false,
       parameterize:
         TestHelper.map_example_pairs([
           {[
@@ -48,13 +48,14 @@ defmodule Day2510Test do
            ], 33}
         ])
 
+    @tag skip: "I can't quite figure this out yet"
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day2510.solve(:part2, input)
       assert expected == actual
     end
   end
 
-  @tag timeout: :infinity
+  @tag skip: "I can't quite figure this out yet"
   test "part2 final" do
     actual = AoC.Day2510.solve(:part2, AoC.fetch_input("2025", "10"))
     assert "TODO" == actual

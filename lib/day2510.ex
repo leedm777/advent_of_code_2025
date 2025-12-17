@@ -1,6 +1,5 @@
 defmodule AoC.Day2510 do
   @behaviour AoC.Solution
-  import AoC.Solution
 
   @impl true
   def solve(:part1, input) do
@@ -16,7 +15,7 @@ defmodule AoC.Day2510 do
     input
     |> Enum.map(&parse_line_joltage/1)
     |> Enum.map(&solve_joltage/1)
-    |> Enum.map(&count_button_pushes/1)
+    |> Enum.map(&length/1)
     |> Enum.sum()
   end
 
@@ -87,81 +86,28 @@ defmodule AoC.Day2510 do
   end
 
   def solve_joltage({wanted_joltage, buttons}) do
-    start = Enum.map(wanted_joltage, fn _ -> 0 end)
+    IO.puts(:stderr, inspect(buttons) <> " => " <> inspect(wanted_joltage))
 
-    # IO.puts(:stderr, inspect(wanted_joltage, charlists: :as_lists))
-
-    find_path(
-      start,
-      # is_goal
-      fn j -> j == wanted_joltage end,
-      # get_neighbors
-      fn j ->
-        buttons
-        |> Enum.map(&press_button(&1, j, wanted_joltage))
-        |> Enum.filter(&(elem(&1, 0) > 0 && is_valid(wanted_joltage, elem(&1, 1))))
-      end,
-      # h
-      fn joltage ->
-        Enum.zip(wanted_joltage, joltage)
-        |> Enum.reduce(0, fn {w, j}, acc ->
-          acc + (w - j)
-        end)
-      end
-    )
-
-    # |> tap(&IO.puts("  " <> inspect(&1, charlists: :as_lists)))
-  end
-
-  def press_button(button, joltage, wanted_joltage) do
-    num_presses =
-      Enum.zip([joltage, wanted_joltage, 0..1000])
-      |> Enum.reduce(:infinity, fn {j, w, idx}, acc ->
-        if j < w && Enum.member?(button, idx) do
-          min(acc, w - j)
-        else
-          acc
-        end
+    matrix =
+      wanted_joltage
+      |> Enum.with_index()
+      |> Enum.map(fn {j, idx} ->
+        Enum.map(buttons, fn b -> if Enum.member?(b, idx), do: 1, else: 0 end) ++ [j]
       end)
 
-    if num_presses == :infinity do
-      {0, joltage}
-    else
-      {num_presses,
-       Enum.reduce(button, joltage, fn idx, next_joltage ->
-         List.update_at(next_joltage, idx, &(&1 + num_presses))
-       end)}
-    end
-  end
+    Enum.map(matrix, fn row -> IO.puts(:stderr, inspect(row, charlists: :as_lists)) end)
 
-  def is_valid(wanted_joltage, joltage) do
-    Enum.zip(wanted_joltage, joltage) |> Enum.all?(fn {w, j} -> w >= j end)
-  end
+    # Enum.reduce(Enum.with_index(buttons) |> Enum.reverse(), fns, fn {button, idx}, fns ->
+    #   letter = <<idx + ?a>>
 
-  def count_button_pushes([]) do
-    0
-  end
-
-  def count_button_pushes([j1]) do
-    j1
-    |> Enum.drop_while(fn x -> x == 0 end)
-    |> Enum.take(1)
-    |> Enum.sum()
-  end
-
-  def count_button_pushes([j1 | rest]) do
-    [j2 | _] = rest
-
-    j1_pushes =
-      Enum.zip([j1, j2])
-      |> Enum.reduce_while(0, fn {x1, x2}, _ ->
-        if x1 == x2 do
-          {:cont, 0}
-        else
-          {:halt, x1 - x2}
-        end
-      end)
-
-    j1_pushes + count_button_pushes(rest)
+    #   Enum.map(Enum.with_index(fns), fn {fnx, fn_idx} ->
+    #     if Enum.member?(button, fn_idx) do
+    #       [letter | fnx]
+    #     else
+    #       fnx
+    #     end
+    #   end)
+    # end)
+    # |> tap(&IO.puts(:stderr, inspect(wanted_joltage) <> " -> " <> inspect(&1)))
   end
 end
