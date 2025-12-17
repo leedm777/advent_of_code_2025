@@ -39,7 +39,24 @@ defmodule Day2511Test do
   defmodule PartTwoExamplesTest do
     use ExUnit.Case,
       async: true,
-      parameterize: TestHelper.map_example_pairs([])
+      parameterize:
+        TestHelper.map_example_pairs([
+          {[
+             "svr: aaa bbb",
+             "aaa: fft",
+             "fft: ccc",
+             "bbb: tty",
+             "tty: ccc",
+             "ccc: ddd eee",
+             "ddd: hub",
+             "hub: fff",
+             "eee: dac",
+             "dac: fff",
+             "fff: ggg hhh",
+             "ggg: out",
+             "hhh: out"
+           ], 2}
+        ])
 
     test "give the expected output", %{input: input, expected: expected} do
       actual = AoC.Day2511.solve(:part2, input)
