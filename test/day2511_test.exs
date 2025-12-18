@@ -66,6 +66,6 @@ defmodule Day2511Test do
 
   test "part2 final" do
     actual = AoC.Day2511.solve(:part2, AoC.fetch_input("2025", "11"))
-    assert "TODO" == actual
+    assert 417_190_406_827_152 == actual
   end
 end

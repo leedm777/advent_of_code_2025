@@ -1,5 +1,6 @@
 defmodule AoC.Day2511 do
   @behaviour AoC.Solution
+  use Agent
 
   @impl true
   def solve(:part1, input) do
@@ -42,25 +43,45 @@ defmodule AoC.Day2511 do
   end
 
   def count_dac_paths(cabling, node) do
+    {:ok, cache} = Agent.start_link(fn -> Map.new() end)
+
+    try do
+      count_dac_paths(cabling, node, cache)
+    after
+      Agent.stop(cache)
+    end
+  end
+
+  def cache_get(cache, node) do
+    Agent.get(cache, &Map.get(&1, node))
+    # |> tap(&IO.puts(:stderr, "  get #{inspect(node)} = #{inspect(&1)}"))
+    # |> tap(fn _ -> IO.puts(:stderr, "    " <> inspect(Agent.get(cache, & &1))) end)
+  end
+
+  def cache_put(cache, node, val) do
+    # IO.puts(:stderr, "  put #{inspect(node)} = #{inspect(val)}")
+    Agent.update(cache, &Map.put(&1, node, val))
+  end
+
+  def count_dac_paths(cabling, node, cache) do
     # IO.puts(:stderr, inspect(node))
 
-    case node do
-      {"out", true, true} ->
-        1
+    cache_get(cache, node) ||
+      case node do
+        {"out", true, true} ->
+          1
 
-      {"out", _, _} ->
-        0
+        {"out", _, _} ->
+          0
 
-      {loc, found_dac, found_fft} ->
-        Map.get(cabling, loc)
-        |> Enum.sum_by(fn next_loc ->
-          next_node = {next_loc, found_dac || next_loc == "dac", found_fft || next_loc == "fft"}
+        {loc, found_dac, found_fft} ->
+          Map.get(cabling, loc)
+          |> Enum.sum_by(fn next_loc ->
+            next_node = {next_loc, found_dac || next_loc == "dac", found_fft || next_loc == "fft"}
 
-          count_dac_paths(
-            cabling,
-            next_node
-          )
-        end)
-    end
+            count_dac_paths(cabling, next_node, cache)
+          end)
+      end
+      |> tap(&cache_put(cache, node, &1))
   end
 end
