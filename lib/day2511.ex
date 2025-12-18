@@ -21,7 +21,7 @@ defmodule AoC.Day2511 do
       |> Map.put("out", ["out"])
 
     # IO.puts(:stderr, inspect(cabling))
-    count_dac_paths(cabling, [{"svr", false, false}])
+    count_dac_paths(cabling, {"svr", false, false})
   end
 
   def parse_line(line) do
@@ -41,24 +41,26 @@ defmodule AoC.Day2511 do
     end
   end
 
-  def count_dac_paths(cabling, locs) do
-    if Enum.all?(locs, &(elem(&1, 0) == "out")) do
-      length(locs)
-    else
-      next_locs =
-        Enum.flat_map(locs, fn {loc, found_dac, found_fft} ->
-          # IO.puts(:stderr, "#{loc} -> #{inspect(Map.get(cabling, loc))}")
+  def count_dac_paths(cabling, node) do
+    # IO.puts(:stderr, inspect(node))
 
-          Map.get(cabling, loc)
-          |> Enum.map(fn next_loc ->
-            {next_loc, found_dac || loc == "dac", found_fft || loc == "fft"}
-          end)
-        end)
-        |> Enum.reject(fn {loc, found_dac, found_fft} ->
-          loc == "out" && (!found_dac || !found_fft)
-        end)
+    case node do
+      {"out", true, true} ->
+        1
 
-      count_dac_paths(cabling, next_locs)
+      {"out", _, _} ->
+        0
+
+      {loc, found_dac, found_fft} ->
+        Map.get(cabling, loc)
+        |> Enum.sum_by(fn next_loc ->
+          next_node = {next_loc, found_dac || next_loc == "dac", found_fft || next_loc == "fft"}
+
+          count_dac_paths(
+            cabling,
+            next_node
+          )
+        end)
     end
   end
 end
