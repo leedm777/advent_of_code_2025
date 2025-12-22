@@ -1,6 +1,9 @@
 defmodule AoC.Day2512 do
   @behaviour AoC.Solution
 
+  @filled "#"
+  @empty "."
+
   @impl true
   def solve(:part1, input) do
     sections =
@@ -21,8 +24,10 @@ defmodule AoC.Day2512 do
 
     {regions_section, shapes_sections} = List.pop_at(sections, -1)
 
-    Enum.map(regions_section, &parse_region/1)
     Enum.map(shapes_sections, &parse_shape/1)
+
+    Enum.map(regions_section, &parse_region/1)
+    |> tap(&Enum.map(&1, fn r -> IO.puts(:stderr, region_to_string(r) <> "\n") end))
 
     # TODO:
     # - represent the region as a bigint
@@ -40,8 +45,26 @@ defmodule AoC.Day2512 do
     [size_str, cnts_str] = String.split(line, ": ")
     [width_str, length_str] = String.split(size_str, "x")
 
-    {String.to_integer(width_str), String.to_integer(length_str),
+    {String.to_integer(width_str), String.to_integer(length_str), 0,
      String.split(cnts_str) |> Enum.map(&String.to_integer/1)}
+  end
+
+  def region_to_string({width, length, bits, presents}) do
+    region_lines =
+      for row_num <- 0..(length - 1) do
+        for col_num <- 0..(width - 1), reduce: "" do
+          row ->
+            row <>
+              if 0 != Bitwise.bsl(1, row_num * width + col_num) |> Bitwise.band(bits) do
+                @filled
+              else
+                @empty
+              end
+        end
+      end
+
+    presents_line = "[#{Enum.join(presents, ",")}]"
+    Enum.join([presents_line | region_lines], "\n")
   end
 
   def parse_shape([id_str | grid_lines]) do
@@ -53,55 +76,56 @@ defmodule AoC.Day2512 do
   end
 
   def flip_and_rotate(grid_ch) do
-    # all combinations, then Enum.uniq()
-    #  -     row,     col
-    #  - 2 - row,     col
-    #  -     row, 2 - col
-    #  - 2 - row, 2 - col
-    #  -     col,     row
-    #  - 2 - col,     row
-    #  -     col, 2 - row
-    #  - 2 - col, 2 - row
-
     num_rows = length(grid_ch)
     num_cols = length(List.first(grid_ch))
 
     Enum.reduce(0..(num_rows - 1), List.duplicate([], 8), fn row_num, grids ->
       rows =
-        Enum.reduce(0..(num_cols - 1), List.duplicate([], 8), fn col_num,
-                                                                 [
-                                                                   row0,
-                                                                   row1,
-                                                                   row2,
-                                                                   row3,
-                                                                   row4,
-                                                                   row5,
-                                                                   row6,
-                                                                   row7
-                                                                 ] ->
-          [
-            [grid_ch |> Enum.at(row_num) |> Enum.at(col_num) | row0],
-            [grid_ch |> Enum.at(num_rows - 1 - row_num) |> Enum.at(col_num) | row1],
-            [grid_ch |> Enum.at(row_num) |> Enum.at(num_cols - 1 - col_num) | row2],
+        Enum.reduce(
+          0..(num_cols - 1),
+          List.duplicate(0, 8),
+          fn col_num, [row0, row1, row2, row3, row4, row5, row6, row7] ->
             [
-              grid_ch |> Enum.at(num_rows - 1 - row_num) |> Enum.at(num_cols - 1 - col_num) | row3
-            ],
-            [grid_ch |> Enum.at(col_num) |> Enum.at(row_num) | row4],
-            [grid_ch |> Enum.at(col_num) |> Enum.at(num_rows - 1 - row_num) | row5],
-            [grid_ch |> Enum.at(num_cols - 1 - col_num) |> Enum.at(row_num) | row6],
-            [grid_ch |> Enum.at(num_cols - 1 - col_num) |> Enum.at(num_rows - 1 - row_num) | row7]
-          ]
-        end)
+              set_bit(row0, grid_ch, row_num, col_num),
+              set_bit(row1, grid_ch, num_rows - 1 - row_num, col_num),
+              set_bit(row2, grid_ch, row_num, num_cols - 1 - col_num),
+              set_bit(row3, grid_ch, num_rows - 1 - row_num, num_cols - 1 - col_num),
+              set_bit(row4, grid_ch, col_num, row_num),
+              set_bit(row5, grid_ch, col_num, num_rows - 1 - row_num),
+              set_bit(row6, grid_ch, num_cols - 1 - col_num, row_num),
+              set_bit(row7, grid_ch, num_cols - 1 - col_num, num_rows - 1 - row_num)
+            ]
+          end
+        )
 
       Enum.zip(rows, grids) |> Enum.map(fn {r, g} -> [r | g] end)
     end)
-    |> tap(fn gs ->
-      Enum.with_index(gs)
-      |> Enum.map(fn {g, idx} ->
-        IO.puts(:stderr, idx)
-        IO.puts(:stderr, g |> Enum.map(&Enum.join/1) |> Enum.join("\n"))
-        IO.puts(:stderr, "")
-      end)
-    end)
+    |> Enum.uniq()
+
+    # |> tap(fn gs ->
+    #   Enum.with_index(gs)
+    #   |> Enum.map(fn {g, idx} ->
+    #     IO.puts(:stderr, idx)
+
+    #     IO.puts(
+    #       :stderr,
+    #       g
+    #       |> Enum.map(fn v -> v |> Integer.to_string(2) |> String.pad_leading(3, "0") end)
+    #       |> Enum.join("\n")
+    #     )
+
+    #     IO.puts(:stderr, "")
+    #   end)
+    # end)
+  end
+
+  def set_bit(row, grid_ch, row_num, col_num) do
+    ch = grid_ch |> Enum.at(row_num) |> Enum.at(col_num)
+
+    if ch == @filled do
+      Bitwise.bsl(row, 1) |> Bitwise.bor(1)
+    else
+      Bitwise.bsl(row, 1)
+    end
   end
 end
