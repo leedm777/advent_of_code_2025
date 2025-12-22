@@ -1,0 +1,107 @@
+defmodule AoC.Day2512 do
+  @behaviour AoC.Solution
+
+  @impl true
+  def solve(:part1, input) do
+    sections =
+      Enum.chunk_while(
+        input,
+        [],
+        fn line, acc ->
+          if line == "" do
+            {:cont, Enum.reverse(acc), []}
+          else
+            {:cont, [line | acc]}
+          end
+        end,
+        fn acc ->
+          {:cont, Enum.reverse(acc), []}
+        end
+      )
+
+    {regions_section, shapes_sections} = List.pop_at(sections, -1)
+
+    Enum.map(regions_section, &parse_region/1)
+    Enum.map(shapes_sections, &parse_shape/1)
+
+    # TODO:
+    # - represent the region as a bigint
+    # - use bitshift and or to position a shape on the regions
+    # - use bitwise-and to detect collisions
+    # - use bitwise-or to place the shape
+  end
+
+  @impl true
+  def solve(:part2, _input) do
+    "TODO"
+  end
+
+  def parse_region(line) do
+    [size_str, cnts_str] = String.split(line, ": ")
+    [width_str, length_str] = String.split(size_str, "x")
+
+    {String.to_integer(width_str), String.to_integer(length_str),
+     String.split(cnts_str) |> Enum.map(&String.to_integer/1)}
+  end
+
+  def parse_shape([id_str | grid_lines]) do
+    id = String.to_integer(String.slice(id_str, 0..-2//1))
+
+    grid_ch = Enum.map(grid_lines, &String.graphemes/1)
+
+    {id, flip_and_rotate(grid_ch)}
+  end
+
+  def flip_and_rotate(grid_ch) do
+    # all combinations, then Enum.uniq()
+    #  -     row,     col
+    #  - 2 - row,     col
+    #  -     row, 2 - col
+    #  - 2 - row, 2 - col
+    #  -     col,     row
+    #  - 2 - col,     row
+    #  -     col, 2 - row
+    #  - 2 - col, 2 - row
+
+    num_rows = length(grid_ch)
+    num_cols = length(List.first(grid_ch))
+
+    Enum.reduce(0..(num_rows - 1), List.duplicate([], 8), fn row_num, grids ->
+      rows =
+        Enum.reduce(0..(num_cols - 1), List.duplicate([], 8), fn col_num,
+                                                                 [
+                                                                   row0,
+                                                                   row1,
+                                                                   row2,
+                                                                   row3,
+                                                                   row4,
+                                                                   row5,
+                                                                   row6,
+                                                                   row7
+                                                                 ] ->
+          [
+            [grid_ch |> Enum.at(row_num) |> Enum.at(col_num) | row0],
+            [grid_ch |> Enum.at(num_rows - 1 - row_num) |> Enum.at(col_num) | row1],
+            [grid_ch |> Enum.at(row_num) |> Enum.at(num_cols - 1 - col_num) | row2],
+            [
+              grid_ch |> Enum.at(num_rows - 1 - row_num) |> Enum.at(num_cols - 1 - col_num) | row3
+            ],
+            [grid_ch |> Enum.at(col_num) |> Enum.at(row_num) | row4],
+            [grid_ch |> Enum.at(col_num) |> Enum.at(num_rows - 1 - row_num) | row5],
+            [grid_ch |> Enum.at(num_cols - 1 - col_num) |> Enum.at(row_num) | row6],
+            [grid_ch |> Enum.at(num_cols - 1 - col_num) |> Enum.at(num_rows - 1 - row_num) | row7]
+          ]
+        end)
+
+      Enum.zip(rows, grids) |> Enum.map(fn {r, g} -> [r | g] end)
+    end)
+    |> tap(fn gs ->
+      Enum.with_index(gs)
+      |> Enum.map(fn {g, idx} ->
+        IO.puts(:stderr, idx)
+        IO.puts(:stderr, g |> Enum.map(&Enum.join/1) |> Enum.join("\n"))
+        IO.puts(:stderr, "")
+      end)
+    end)
+  end
+end
