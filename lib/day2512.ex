@@ -24,9 +24,9 @@ defmodule AoC.Day2512 do
 
     {regions_section, shapes_sections} = List.pop_at(sections, -1)
 
-    Enum.map(shapes_sections, &parse_shape/1)
+    shapes = Enum.map(shapes_sections, &parse_shape/1) |> Map.new()
 
-    Enum.map(regions_section, &parse_region/1)
+    Enum.map(regions_section, &parse_region(&1, shapes))
     |> tap(&Enum.map(&1, fn r -> IO.puts(:stderr, region_to_string(r) <> "\n") end))
 
     # TODO:
@@ -41,15 +41,28 @@ defmodule AoC.Day2512 do
     "TODO"
   end
 
-  def parse_region(line) do
+  def parse_region(line, shapes) do
     [size_str, cnts_str] = String.split(line, ": ")
     [width_str, length_str] = String.split(size_str, "x")
+    width = String.to_integer(width_str)
+    length = String.to_integer(length_str)
 
-    {String.to_integer(width_str), String.to_integer(length_str), 0,
-     String.split(cnts_str) |> Enum.map(&String.to_integer/1)}
+    {width, length, 0, String.split(cnts_str) |> Enum.map(&String.to_integer/1),
+     map_shapes_to_region(shapes, width)}
   end
 
-  def region_to_string({width, length, bits, presents}) do
+  def map_shapes_to_region(shapes, width) do
+    Map.new(shapes, fn {idx, morphs} ->
+      {idx,
+       Enum.map(morphs, fn morph ->
+         Enum.reduce(morph, 0, fn bits, acc ->
+           Bitwise.bor(Bitwise.bsl(acc, width), bits)
+         end)
+       end)}
+    end)
+  end
+
+  def region_to_string({width, length, bits, presents_wanted, shapes}) do
     region_lines =
       for row_num <- 0..(length - 1) do
         for col_num <- 0..(width - 1), reduce: "" do
@@ -63,8 +76,8 @@ defmodule AoC.Day2512 do
         end
       end
 
-    presents_line = "[#{Enum.join(presents, ",")}]"
-    Enum.join([presents_line | region_lines], "\n")
+    presents_line = "[#{Enum.join(presents_wanted, ",")}]"
+    Enum.join([inspect(shapes), presents_line | region_lines], "\n")
   end
 
   def parse_shape([id_str | grid_lines]) do
@@ -86,9 +99,9 @@ defmodule AoC.Day2512 do
           List.duplicate(0, 8),
           fn col_num, [row0, row1, row2, row3, row4, row5, row6, row7] ->
             [
-              set_bit(row0, grid_ch, row_num, col_num),
-              set_bit(row1, grid_ch, num_rows - 1 - row_num, col_num),
-              set_bit(row2, grid_ch, row_num, num_cols - 1 - col_num),
+              set_bit(row0, grid_ch, row_num, num_cols - 1 - col_num),
+              set_bit(row1, grid_ch, row_num, col_num),
+              set_bit(row2, grid_ch, num_rows - 1 - row_num, col_num),
               set_bit(row3, grid_ch, num_rows - 1 - row_num, num_cols - 1 - col_num),
               set_bit(row4, grid_ch, col_num, row_num),
               set_bit(row5, grid_ch, col_num, num_rows - 1 - row_num),
